@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOCFI_INCIO</title>
-    <link rel="stylesheet" href="EstiloIncio.css">
-   
+    <link rel="stylesheet" href="EstiloInicio.css">
+    <!-- 
+        Es necesario instalar las dependencias de npm para usar vite
+        En la terminal (en la carpeta raiz del proyecto) usar: npm install
+
+        cuando las dependencias se instalen, (y con el servidor de artisan activado (php artisan serve))
+        ejecutar el comando en una nueva ventana de la terminal: npm run dev
+
+        OJO: no cerrar el servidor de artisan, ambas deben permanecer abiertas
+
+        Esto permitirá compilar los recursos (la carpeta resources)
+
+        Borrar este comentario cuando lo crean necesario *
+    -->
+    @vite(['resources/css/EstiloInicio.css'])
 </head>
 <body>
     <!-- ENCABEZADO 1 -->

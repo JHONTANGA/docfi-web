@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ReporteController;
 
 Route::get('/inicio', function () {
@@ -15,6 +16,7 @@ Route::get('/contacto', function () {
 
 // Rutas para los reportes
 Route::get('/reportes/crear', [ReporteController::class, 'crear'])->name('crear-reporte');
-Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');
-Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');
-Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');
+Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('guardar-reporte');  // Guardar el reporte
+Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');  // Mostrar mis reportes
+Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');  // Eliminar reporte
+Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');  // Buscar reportes

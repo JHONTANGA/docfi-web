@@ -4,56 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Reporte</title>
-    @vite(['resources/css/EstiloInicio.css'])
+    <link rel="stylesheet" href="{{ asset('css/EstiloCrearReporte.css') }}">
+    @vite(['resources/css/EstiloCrearReporte.css'])
 </head>
 <body>
     <header>
-    <header style="display: flex; align-items: center; justify-content: space-between; padding: 70px; background-color: #ffffff;">
-        <div style="flex: 2;">
+        <div style="padding: 30px; text-align: center;">
             <img src="C:/Users/geral/Downloads/pruebaproyecto/images/logoDocfi.png" alt="DocFi Logo" style="height: 100px;">
         </div>
-
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar">
-            <button class="search-button">
-                <img src="C:\Users\geral\Downloads\pruebaproyecto\images\lupa.png" alt="Buscar" class="search-icon">
-            </button>
-        </div>
-       
-
-        <div class="sesion1" style="margin-bottom: 20px;">
-            <a href="#" style="color: #000000; text-decoration: none;">INICIAR SESIÓN</a>
-            <a href="#" style="color: #000000; text-decoration: none;">REGISTRARSE</a>
-        </div>
-    
-        <div class="sesion2">
-            <a1 href="#" style="color: #000000; text-decoration: none;">¿QUIÉNES SOMOS?</a>
-            <a2 href="#" style="color: #000000; text-decoration: none;">¿CÓMO FUNCIONA?</a>
-        </div>
-
-    
     </header>
 
-    <div class="container">
-        <h2>Crear Reporte</h2>
-        <form method="POST" action="{{ route('guardar-reporte') }}">
+    <!-- Formulario Crear Reporte -->
+    <div class="form-container">
+        <h1>Crear un Reporte</h1>
+        <form method="POST" action="{{ route('crear-reporte') }}">
             @csrf
-            <!-- Aquí agregarás los campos para el tipo de documento, descripción, etc. -->
-            <label for="tipo_documento">Tipo de Documento</label>
-            <input type="text" name="tipo_documento" id="tipo_documento" required>
+            <div class="input-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre_reportante" placeholder="Escribe tu nombre" required>
+            </div>
 
-            <label for="nombre_reportante">Nombre del Reportante</label>
-            <input type="text" name="nombre_reportante" id="nombre_reportante" required>
+            <div class="input-group">
+                <label for="contacto">Número de Contacto:</label>
+                <input type="text" id="contacto" name="contacto" placeholder="Escribe tu número de contacto" required>
+            </div>
 
-            <label for="descripcion">Descripción</label>
-            <textarea name="descripcion" id="descripcion" required></textarea>
+            <div class="input-group">
+                <label for="descripcion">Descripción de los Hechos:</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Describe brevemente los hechos" required></textarea>
+            </div>
 
-            <button type="submit">Crear Reporte</button>
+            <div class="input-group">
+                <label for="clasificacion">Clasificación:</label>
+                <select id="clasificacion" name="clasificacion" required>
+                    <option value="perdido">Documento Perdido</option>
+                    <option value="encontrado">Documento Encontrado</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="direccion">Dirección Cercana:</label>
+                <input type="text" id="direccion" name="direccion" placeholder="Escribe la dirección donde se encontró" required>
+            </div>
+
+            <!-- Nuevo campo: Tipo de Documento -->
+            <div class="input-group">
+                <label for="tipo_documento">Tipo de Documento:</label>
+                <select id="tipo_documento" name="tipo_documento" required>
+                    <option value="pasaporte">Pasaporte</option>
+                    <option value="cedula_ciudadania">Cédula de Ciudadanía</option>
+                    <option value="cedula_extranjeria">Cédula de Extranjería</option>
+                    <option value="tarjeta_identidad">Tarjeta de Identidad</option>
+                </select>
+            </div>
+
+            <!-- Nuevo campo: Número de Documento -->
+            <div class="input-group">
+                <label for="numero_documento">Número de Documento:</label>
+                <input type="text" id="numero_documento" name="numero_documento" placeholder="Escribe el número de documento" required>
+            </div>
+
+            <button type="submit" class="btn">Generar Reporte</button>
         </form>
     </div>
 
-    <footer>
-        <!-- Aquí puedes agregar el pie de página -->
-    </footer>
+    <!-- Mostrar el número de ticket generado -->
+    @if (session('ticket'))
+    <div class="ticket-notification">
+        <p>Tu reporte ha sido creado con el número de ticket: <strong>{{ session('ticket') }}</strong></p>
+    </div>
+    @endif
+
 </body>
 </html>

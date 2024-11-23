@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteController;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Illuminate\Http\Request;
+
+$jwt = request()->cookie('jwt_token');
 
 Route::get('/inicio', function () {
     return view('inicio');  // Cargar la vista 'inicio.blade.php'
@@ -20,3 +26,11 @@ Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('g
 Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');  // Mostrar mis reportes
 Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');  // Eliminar reporte
 Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');  // Buscar reportes
+
+Route::get('/loginview', [AuthController::class, 'loginview'])->name('loginview');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+# Aquí se deben poner todas las rutas que requieran iniciar sesión para verse
+Route::middleware('JWTAuth')->group(function () {
+    Route::get('/logintest', [AuthController::class, 'protview'])->name('logintest');
+});

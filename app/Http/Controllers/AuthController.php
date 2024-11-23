@@ -12,14 +12,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $response = Http::post('http://127.0.0.1:8001/api/login/', [
-            'username' => $request->email,
+            'username' => $request->a,
             'password' => $request->password,
         ]);
 
         if ($response->successful()) {
             $jwt = $response['access'];
             Cookie::queue(Cookie::make('jwt_token', $jwt, 60, null, null, true, true));
-            return redirect()->route('logintest');
+            return redirect()->route('mis-reportes');
         }
 
         return back()->withErrors(['login' => 'Credenciales inválidas']);
@@ -31,16 +31,18 @@ class AuthController extends Controller
         Cookie::queue(Cookie::forget('jwt_token'));
 
         // Redirigir al usuario a la página de inicio o donde desees
-        return redirect()->route('loginview')->with('message', 'Has cerrado sesión correctamente.');
+        return redirect()->route('welcome')->with('message', 'Has cerrado sesión correctamente.');
     }
 
-    public function loginview()
+    public function register(Request $request)
     {
-        return (view('LoginView'));
+        // Aquí puedes agregar la lógica para procesar el registro (no la haremos por ahora)
+        // Redirige a la vista de bienvenida después de hacer registro
+        return redirect()->route('welcome');
     }
 
-    public function protview()
+    public function showWelcomePage()
     {
-        return (view('logintest'));
+        return view('welcome'); // Carga la vista 'welcome.blade.php'
     }
 }

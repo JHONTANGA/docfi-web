@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+# composer require firebase/php-jwt
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Redirect;
@@ -17,7 +18,7 @@ class JwtAuth
 
         // Verificar si la cookie está presente
         if (!$request->hasCookie($cookieName)) {
-            return redirect('/loginview')->with('error', 'Debes iniciar sesión para acceder a esta página.');
+            return redirect('/welcome')->with('error', 'Debes iniciar sesión para acceder a esta página.');
         }
 
         // Obtener el JWT desde la cookie
@@ -33,7 +34,7 @@ class JwtAuth
 
         } catch (\Exception $e) {
             // Si el token no es válido o ha expirado
-            return redirect('/loginview')->with('error', 'Token inválido o expirado.');
+            return redirect('/welcome')->with('error', 'Token inválido o expirado.');
         }
 
         // Continuar con la solicitud

@@ -62,9 +62,10 @@
 
     <!-- Footer -->
     <footer>
-        <a href="#">Términos y condiciones</a> |
+        <!-- Modificación: Agregar enlace a los términos y condiciones -->
+        <a href="{{ route('terms.conditions') }}">Términos y condiciones</a> |
         <a href="#">Política de cookies</a> |
-        <a href="#">Política de privacidad</a>
+        <a href="{{ route('privacy.policy') }}">Política de privacidad</a>
         <p>&copy; 2024 Docfi</p>
     </footer>
 

@@ -1,0 +1,185 @@
+/* Estilos CSS INICIO - GENERAL */
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Fondo general */
+}
+
+/* Estilos encabezado 1 */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 20px 0;
+}
+
+/* Contenedor principal del header */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+}
+
+/* Logo */
+.logo img {
+    height: 100px;
+}
+
+/* Estilo de los enlaces del header */
+.header-links {
+    display: flex;
+    gap: 15px;
+    font-weight: bold;
+}
+
+.header-links a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Sección principal de la página bienvenida */
+.welcome-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Centrado vertical */
+    background-color: #285EAF; /* Fondo similar a la página de inicio */
+    color: white;
+    padding: 40px;
+}
+
+/* Contenedor de los formularios */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Alinea los formularios hacia la derecha */
+    width: 80%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulario de Registro (lado izquierdo) */
+.form-left {
+    flex: 1;
+    padding: 20px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-left h2 {
+    text-align: center;
+    color: #285EAF;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333; /* Color de los nombres de los campos */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.input-group button {
+    background-color: #285EAF;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.input-group button:hover {
+    background-color: #1f4f91;
+}
+
+/* Línea divisoria entre formularios */
+.divider {
+    height: 100%;
+    border-left: 1px solid #ddd;
+    margin: 0 20px;
+}
+
+/* Formulario de Login (lado derecho) */
+.form-right {
+    flex: 1;
+    padding: 20px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-right h2 {
+    text-align: center;
+    color: #285EAF;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333; /* Color de los nombres de los campos */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.input-group button {
+    background-color: #285EAF;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.input-group button:hover {
+    background-color: #1f4f91;
+}
+
+/* Media Query para dispositivos móviles */
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .divider {
+        height: 0;
+        border-left: none;
+    }
+}

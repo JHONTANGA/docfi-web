@@ -1,21 +1,37 @@
+
 /* Estilos CSS INICIO - GENERAL */
-body {
-    font-family: Roboto, sans-serif;
+body, h1, h2, h3, p, ul, li, a, img {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
 }
 
-/* Estilos encabezado 1 */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var #ffffff;
+    color: #333;
+    width: 100%; /* Asegura que ocupen todo el ancho */
+    height: 100%; /* Asegura que cubra todo el viewport */
+    overflow-x: hidden; /* Evita el desplazamiento horizontal no deseado */
+    box-sizing: border-box;
+
+}
+
+
+/*------- Sesion 1 principal --------------------------------*/
 header {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    padding: 50px 95px; /* espacio entre logo y barra */
     background-color: #ffffff;
-    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Contenedor principal del header */
 .header-container {
     display: flex;
     align-items: center;
@@ -23,24 +39,23 @@ header {
     width: 80%;
 }
 
-/* Logo */
 .logo img {
-    height: 100px;
+    height: 80px;
+    margin-right: 60px; /* Separación del borde derecho */
 }
 
 /* Barra de búsqueda */
-.search-bar {
+.search-bar { 
     display: flex;
     align-items: center;
-    margin: 0 20px;
     border: 2px solid #000;
     border-radius: 25px;
     overflow: hidden;
-    width: 350px; /* Ajuste el tamaño de la barra de búsqueda */
+    width: 700px; /* Ajuste longitud de la barra de búsqueda */
 }
 
 /* Estilo de el espacio "buscar" */
-.search-bar input {
+.search-bar input { 
     border: none;
     padding: 10px;
     flex: 1;
@@ -49,7 +64,7 @@ header {
 }
 
 /* Icono de búsqueda */
-.search-button {
+.search-button { 
     background-color: white;
     border: none;
     border-radius: 50%;
@@ -57,27 +72,21 @@ header {
     cursor: pointer;
 }
 
-.search-icon {
-    width: 16px;
-    height: 16px;
-}
-
-/* Estilos de los enlaces del header (Inicio de sesión, registro, etc.) */
-.header-links {
-    display: flex;
-    gap: 15px;
-    font-weight: bold;
-}
-
-.header-links a {
-    text-decoration: none;
-    color: #000;
+/* Icono de búsqueda img */
+.search-icon { 
+    width: 20px;
+    height: 17px;
 }
 
 /* Estilos del menú desplegable para reportes */
 .menu-reportes {
     position: relative;
-    margin-top: 10px;
+    margin-top: 50px;
+    align-items: flex-start;
+
+    margin-bottom: 20px; /* Espaciado entre cada bloque */
+    position: relative;
+    top: 75px; /* Mueve los cuadros hacia abajo */
 }
 
 .dropdown-menu {
@@ -87,9 +96,15 @@ header {
     left: 0;
     background-color: #ffffff;
     border: 1px solid #000000;
-    width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
+    z-index: 1000;    
+    left: -170px; /* Ajusta este valor según lo necesario */
+
+    width: auto; /* tamaño del acho*/
+    min-width: 100px; /* Define un ancho mínimo */
+    max-width: 300px; /* Opcional: Define un ancho máximo */
+
 }
 
 .dropdown-menu a {
@@ -108,34 +123,316 @@ header {
     display: block;
 }
 
-/* Sección intro */
+/* -------Sección 2 introducción zona azul *---------------------------------------*/
 .intro-section {
-    background-color: #285EAF;
-    color: #ffffff;
     text-align: center;
-    padding: 100px 20px;
+    padding: 190px 20px; /* tamaño  */
+    background: linear-gradient(45deg, #e717ba, #0056b3);
+    color: #FFFFFF;
 }
 
-/* Botón */
-.btn {
+/* contenido principal cuadros */
+.menu-contenido {
+    display: flex; 
+    justify-content: flex-start; /* Alinear al extremo derecho */
+    align-items: center; 
+    margin-right: 10px; /* Separación del borde derecho */
+    margin-top: 40px; /* Espaciado superior */
+    padding: 0;
+    gap: 10px; /* Espaciado entre la primera y la segunda fila */
+    margin-bottom: 20px; /* Espaciado entre cada bloque */
+    justify-content: space-around;
+    position: relative;
+    top: 78px; /* Mueve los cuadros hacia abajo */   
+}
+
+/* contenido principal Cuadros individuales  */
+.menu-item {
     display: inline-block;
-    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #8ea5e6;
-    color: #ffffff;
+    background-color: #f0f0f0;
+    color: #6d28d9;
     text-decoration: none;
-    border-radius: 5px;
-}
-
-/* Estilos footer */
-footer {
-    background-color: #ffffff;
-    color: #000;
-    padding: 50px;
+    border: 2px solid #b8bec7;
+    border-radius: 1px;
+    font-weight: bold;
     text-align: center;
+    white-space: nowrap; /* Evita el salto de línea */
+    overflow: hidden; /* Oculta texto sobrante si es necesario */
+    text-overflow: ellipsis; /* Muestra "..." si el texto es muy largo */
+    font-size: 14px; /* Ajusta el tamaño del texto */
+    transition: background-color 0.3s ease, color 0.3s ease;
+   
+    position: relative;
+    left: -180px; /* Mueve los cuadros botones hacia la izquierda */
+ }
+
+/* Efecto hover (cuando el usuario pasa el mouse) */
+.menu-item:hover {
+    background-color: #6d28d9; /* Fondo al pasar el mouse */
+    color: white; /* Texto blanco */
 }
 
-footer a {
-    color: #000;
-    margin: 0 10px;
+/* --texto - Sección 2 introducción zona azul *--*/
+.intro-section h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: white; /* Texto blanco */
+
+}
+
+.intro-section p {
+    font-size: 1.2em;
+    margin-bottom: 80px; /*posicion sdel boton registrarse*/
+}
+
+.intro-section .btn {
+    background: rgba(218, 218, 218, 0.44);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 20px 50px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;  
+}
+
+.intro-section .btn:hover {
+    background-color: #5a52e6;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);/*sombra*/
+}
+
+/*----sección 3 Contenido principal------*/
+
+.container {
+    display: flex; 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;    
+    flex-direction: column; /* Asegura que las secciones se apilen verticalmente */
+    gap: 70px; /* Espacio entre secciones */
+}
+
+.content-section {
+    display: flex;
+    justify-content: space-between; /* Asegura que texto e imagen estén a los lados */
+    align-items: center; /* Alinea los elementos verticalmente */
+    gap: 20px; /* Espacio entre columnas */
+    padding-bottom: 20px; /* Margen inferior */
+}
+
+.container h2 {
+    font-size: 4.3em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000000;
+    line-height: 90px;
+}
+
+.container p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-bottom: 35px;
+    color: #555;
+}
+
+.container .btn {
+    background-color: #b6b6e6;
+    color: #000000;
+    font-weight: bold;
+    border: none;
+    padding: 15px 45px; /* Ajusta ancho y alto */
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    line-height: 150%; /*altura linea*/
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /*sombra*/
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.container .btn:hover {
+    background-color: #5a52e6;
+    color: #FFFFFF;   
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /*sombra*/
+ }  
+
+ .imgcontainer {
+    margin-top: 30px;
+    max-width: 40%;
+    height: auto;
+    border: 1px solid #000;
+}
+
+.left-column {
+    flex: 1;
+    text-align: left;
+}
+
+.right-column {
+    flex: 1;
+    text-align: right;
+}
+
+.imgcontainer {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* -----------sección 4 cuadros lista documentos---------------------------------------*/
+
+.document-card {
+    text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.document-card h1 {
+    background: linear-gradient(45deg, #004455, #0056b3);
+    padding: 20px;
+    font-size: 30px;
+    color: #ffffff; /* Azul del encabezado */
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px; /* Espaciado interno */
+    background: linear-gradient(45deg, #004455, #0056b3);
+    backdrop-filter: blur(10px); /* Efecto de desenfoque detrás del fondo */
+    border-radius: 12px; /* Bordes redondeados para el fondo */
+    margin-top: 30px;
+}
+
+.card {
+    background-color: #F5F5ED;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px; /* Ancho fijo de cada tarjeta */
+    box-shadow: 0 4px 6px rgba(27, 177, 214, 0.1); /* Sombra */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efecto de elevación */
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+.card h3 {
+    font-size: 18px;
+    color: #333333; /* Texto oscuro */
+    margin-bottom: 15px;
+}
+
+.card img {
+    width: 80px; /* Tamaño del ícono */
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.card p {
+    font-size: 18px;
+    color: #007bff; /* Texto en azul */
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.card p:hover {
+    color: #0056b3; /* Azul más oscuro al pasar el cursor */
+}
+
+
+/* -------Footer "Terminos y Condiciones" *-------------------------------------*/
+
+footer {
+    margin: 0; /* Asegura que no haya márgenes alrededor */
+    padding: 15px 0; /* Espaciado interno */
+    background-color: #285EAF; 
+    color: #FFFFFF; /* Texto blanco */
+    text-align: center; /* Texto centrado */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye padding y border en el ancho */
+    font-weight: bold; /* Texto en negrita */
+ }
+ 
+ footer a {
+    color: #FFFFFF;
+    margin: 15px; /* Espaciado entre enlaces */
+    text-decoration: none; /* Quitar subrayado */
+ }
+
+
+/* ---------Estilo para la barra lateral ----------------------------------------------*/
+
+/* Barra lateral */
+.sidebar {
+   position: fixed;
+   top: 0;
+   left: -250px;
+   height: 100%;
+   width: 250px;
+   background: linear-gradient(45deg, #e717ba, #57a0ee);
+   color: white;
+   padding: 20px;
+   transition: left 0.3s ease;
+}
+
+.sidebar ul {
+    display: flex;
+    flex-direction: column; /* Organiza verticalmente */
+    align-items: flex-start; /* Ajusta los elementos hacia el inicio */
+    padding: 60px 0; /* Baja el contenido dentro de la barra lateral */
+}
+
+.sidebar ul li {
+   margin: 5px 0; /* Espaciado entre ítems */
+   font-size: 25px; /* Ajusta tamaño */
+   line-height: 1.5; /* Reduce separación vertical */
+}
+
+.sidebar ul li.top-item {
+    margin-top: 30px; /* Baja estos elementos específicos */
+ }
+
+.sidebar ul li a {
+ display: block;
+ font-size: 18px;
+ color: white;
+ text-decoration: none;
+ transition: background-color 0.3s;
+ font-weight: bold; /* Texto en negrita */
+
+}
+
+.sidebar ul li a:hover {
+ background-color: #a045b3;
+}
+
+/* Botón toggle */
+.toggle-btn {
+ font-size: 30px;
+ background-color: transparent;
+ border: none;
+ color: #333;
+ position: absolute;
+ top: 20px;
+ left: 20px;
+ cursor: pointer;
+}
+
+/* Estilos cuando la barra lateral se muestra */
+.sidebar.show {
+ left: 0;
+}
+
+/* Estilo para el contenido cuando la barra lateral está activa */
+.content.active {
+ margin-left: 250px;
 }

@@ -21,8 +21,7 @@ body {
 
 }
 
-
-/*------- Sesion 1 principal --------------------------------*/
+/*------- Sección 1 principal Encabezado -----------------------*/
 header {
     display: flex;
     align-items: center;
@@ -123,27 +122,26 @@ header {
     display: block;
 }
 
-/* -------Sección 2 introducción zona azul *---------------------------------------*/
+/* -------Menú principal inicio---- ---------------------*/
 .intro-section {
     text-align: center;
-    padding: 190px 20px; /* tamaño  */
+    padding: 200px 20px; /* tamaño  */
     background: linear-gradient(45deg, #e717ba, #0056b3);
     color: #FFFFFF;
 }
 
-/* contenido principal cuadros */
 .menu-contenido {
     display: flex; 
     justify-content: flex-start; /* Alinear al extremo derecho */
     align-items: center; 
     margin-right: 10px; /* Separación del borde derecho */
-    margin-top: 40px; /* Espaciado superior */
+    /*margin-top: 10px; /* Espaciado superior */
     padding: 0;
     gap: 10px; /* Espaciado entre la primera y la segunda fila */
-    margin-bottom: 20px; /* Espaciado entre cada bloque */
+    margin-bottom: 10px; /* Espaciado entre cada bloque */
     justify-content: space-around;
     position: relative;
-    top: 78px; /* Mueve los cuadros hacia abajo */   
+    top: 92px; /* Mueve los cuadros hacia abajo */   
 }
 
 /* contenido principal Cuadros individuales  */
@@ -164,7 +162,7 @@ header {
     transition: background-color 0.3s ease, color 0.3s ease;
    
     position: relative;
-    left: -180px; /* Mueve los cuadros botones hacia la izquierda */
+    left: -150px; /* Mueve los cuadros botones hacia la izquierda */
  }
 
 /* Efecto hover (cuando el usuario pasa el mouse) */
@@ -203,7 +201,7 @@ header {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);/*sombra*/
 }
 
-/*----sección 3 Contenido principal------*/
+/*----sección 3 Contenido principal---------------*/
 
 .container {
     display: flex; 
@@ -257,13 +255,6 @@ header {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /*sombra*/
  }  
 
- .imgcontainer {
-    margin-top: 30px;
-    max-width: 40%;
-    height: auto;
-    border: 1px solid #000;
-}
-
 .left-column {
     flex: 1;
     text-align: left;
@@ -278,6 +269,7 @@ header {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
+    border: 1px solid #000;
 }
 
 /* -----------sección 4 cuadros lista documentos---------------------------------------*/
@@ -352,19 +344,18 @@ header {
 /* -------Footer "Terminos y Condiciones" *-------------------------------------*/
 
 footer {
-    margin: 0; /* Asegura que no haya márgenes alrededor */
-    padding: 15px 0; /* Espaciado interno */
-    background-color: #285EAF; 
-    color: #FFFFFF; /* Texto blanco */
-    text-align: center; /* Texto centrado */
-    width: 100%; /* Asegura que ocupe todo el ancho */
-    box-sizing: border-box; /* Incluye padding y border en el ancho */
-    font-weight: bold; /* Texto en negrita */
+    margin: 0; /* Asegura que no tenga márgenes externos */
+    padding: 15px 0; /* Espaciado superior e inferior uniforme */
+    background-color: #285EAF;
+    color: #FFFFFF;
+    text-align: center;
+    /*width: 100%; /* Asegura que ocupe todo el ancho disponible */    
+    font-weight: bold; /* Texto en negrita */ 
  }
  
  footer a {
     color: #FFFFFF;
-    margin: 15px; /* Espaciado entre enlaces */
+    margin: 5px; /* Espaciado entre enlaces */
     text-decoration: none; /* Quitar subrayado */
  }
 
@@ -436,3 +427,5 @@ footer {
 .content.active {
  margin-left: 250px;
 }
+
+

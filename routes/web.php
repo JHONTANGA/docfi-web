@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\PrivacyPolicyController; // Importa el controlador de la política de privacidad
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TerminosyCondicionesController; 
 
 
 $jwt = request()->cookie('jwt_token');
@@ -15,13 +17,11 @@ Route::get('/inicio', function () {
     return view('inicio');  // Cargar la vista 'inicio.blade.php'
 });
 
-Route::get('/reportes', function () {
-    return view('reportes');  // Cargar la vista 'reportes.blade.php'
-});
+// Ruta para los términos y condiciones
+Route::get('/terminos-y-condiciones', [TerminosyCondicionesController::class, 'show'])->name('terms.conditions');
 
-Route::get('/contacto', function () {
-    return view('contacto');  // Cargar la vista 'contacto.blade.php'
-});
+// Ruta para la Política de Privacidad
+Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('privacy.policy');
 
 // Rutas para los reportes
 Route::get('/reportes/crear', [ReporteController::class, 'crear'])->name('crear-reporte');
@@ -41,3 +41,8 @@ Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcom
 // Rutas para login y registro (procesar los formularios)
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');  // Procesa el login
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');  // Procesa el registro
+
+//Ruta informacion docfi - quienes somos - como funciona
+Route::get('/infoDocfi', function () {
+    return view('infoDocfi'); // Nombre del archivo Blade
+})->name('infoDocfi');

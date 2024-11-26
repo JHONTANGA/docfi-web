@@ -10,7 +10,7 @@
 <body>
     <header>
         <div style="padding: 30px; text-align: center;">
-            <img src="C:/Users/geral/Downloads/pruebaproyecto/images/logoDocfi.png" alt="DocFi Logo" style="height: 100px;">
+            <img src="{{asset('images/Web_Images/logoDocfi.png')}}" alt="DocFi Logo" style="height: 100px;">
         </div>
     </header>
 

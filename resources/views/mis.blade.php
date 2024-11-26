@@ -8,11 +8,8 @@
     @vite(['resources/css/EstiloMisReportes.css'])
 </head>
 <body>
-    <header>
-        <div style="padding: 30px; text-align: center;">
-            <img src="C:/Users/geral/Downloads/pruebaproyecto/images/logoDocfi.png" alt="DocFi Logo" style="height: 100px;">
-        </div>
-    </header>
+    <!-- Encabezado -->
+    <x-header/>
 
     <!-- Contenedor de los Reportes -->
     <div class="container">

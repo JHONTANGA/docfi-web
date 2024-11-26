@@ -45,4 +45,9 @@ class AuthController extends Controller
     {
         return view('welcome'); // Carga la vista 'welcome.blade.php'
     }
+
+    public function showInicioPage()
+    {
+        return view('inicio'); // Carga la vista 'inicio.blade.php'
+    }
 }

@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['JWTAuth' => \App\Http\Middleware\JwtAuth::class,]);
+        $middleware->alias([
+            'JWTAuth' => \App\Http\Middleware\JWTAuth::class,
+            'CheckAuthenticated' => \App\Http\Middleware\CheckAuthenticated::class,
+        ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

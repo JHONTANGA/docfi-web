@@ -9,13 +9,14 @@ use App\Http\Controllers\TerminosyCondicionesController;
 
 $jwt = request()->cookie('jwt_token');
 
-// Ruta para la página principal que llevará a welcome
-Route::get('/', [AuthController::class, 'showWelcomePage'])->name('welcome');
-
-// Rutas existentes (no modificadas)
-Route::get('/inicio', function () {
+// Ruta para la pagina principal
+Route::get('/', function () {
     return view('inicio');  // Cargar la vista 'inicio.blade.php'
 });
+
+// Ruta para la página principal en caso de requerir /inicio
+Route::get('/inicio', [AuthController::class, 'showInicioPage'])->name('inicio');
+
 
 // Ruta para los términos y condiciones
 Route::get('/terminos-y-condiciones', [TerminosyCondicionesController::class, 'show'])->name('terms.conditions');
@@ -35,8 +36,12 @@ Route::get('/login', [AuthController::class, 'showWelcomePage'])->name('login');
 Route::middleware('JWTAuth')->group(function () {
     Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');  // Mostrar mis reportes
 });
-// Ruta para la vista de bienvenida (contendrá ambos formularios)
-Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcome');
+
+Route::middleware('CheckAuthenticated')->group(function () {
+  // Ruta para la vista de bienvenida (contendrá ambos formularios)
+  Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcome');
+});
+
 
 // Rutas para login y registro (procesar los formularios)
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');  // Procesa el login

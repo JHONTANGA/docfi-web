@@ -9,7 +9,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Redirect;
 
-class JwtAuth
+class JWTAuth
 {
     public function handle(Request $request, Closure $next)
     {

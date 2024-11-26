@@ -40,8 +40,8 @@
 
 <!-- Menú principal inicio -->
     <nav class="menu-contenido">
-        <a href="#quienes-somos" class="menu-item">¿QUIÉNES SOMOS?</a>
-        <a href="#como-funciona" class="menu-item">¿CÓMO FUNCIONA?</a>
+        <a href="{{ route('infoDocfi') }}" class="menu-item">¿QUIÉNES SOMOS?</a>
+        <a href="{{ route('infoDocfi') }}" class="menu-item">¿CÓMO FUNCIONA?</a>
     </nav>
 
 <!-- Menú desplegable de reportes -->
@@ -143,6 +143,9 @@
         });
     </script>
 
+<script>
+    document.getElementById('sidebar').classList.toggle('show');
+</script>
 
 
 </body>

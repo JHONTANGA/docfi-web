@@ -32,3 +32,8 @@ Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcom
 // Rutas para login y registro (procesar los formularios)
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');  // Procesa el login
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');  // Procesa el registro
+
+//Ruta informacion docfi - quienes somos - como funciona
+Route::get('/infoDocfi', function () {
+    return view('infoDocfi'); // Nombre del archivo Blade
+})->name('infoDocfi');

@@ -126,7 +126,7 @@ header {
 .intro-section {
     text-align: center;
     padding: 200px 20px; /* tamaño  */
-    background: linear-gradient(45deg, #e717ba, #0056b3);
+    background: linear-gradient(45deg,#b9b8b9, #57a0ee);
     color: #FFFFFF;
 }
 
@@ -149,7 +149,7 @@ header {
     display: inline-block;
     padding: 10px 20px;
     background-color: #f0f0f0;
-    color: #6d28d9;
+    color: #1375ad;
     text-decoration: none;
     border: 2px solid #b8bec7;
     border-radius: 1px;
@@ -167,7 +167,7 @@ header {
 
 /* Efecto hover (cuando el usuario pasa el mouse) */
 .menu-item:hover {
-    background-color: #6d28d9; /* Fondo al pasar el mouse */
+    background-color: #1375ad; /* Fondo al pasar el mouse */
     color: white; /* Texto blanco */
 }
 
@@ -369,7 +369,7 @@ footer {
    left: -250px;
    height: 100%;
    width: 250px;
-   background: linear-gradient(45deg, #e717ba, #57a0ee);
+   background: linear-gradient(45deg, #b9b8b9, #57a0ee);
    color: white;
    padding: 20px;
    transition: left 0.3s ease;

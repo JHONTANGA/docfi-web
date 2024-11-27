@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\FetchUserData;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'JWTAuth' => \App\Http\Middleware\JWTAuth::class,
             'CheckAuthenticated' => \App\Http\Middleware\CheckAuthenticated::class,
+            'FetchUserData'=> \App\Http\Middleware\FetchUserData::class,
         ]);
         
     })

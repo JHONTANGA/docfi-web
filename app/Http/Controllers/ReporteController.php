@@ -3,58 +3,83 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reporte; // Asegúrate de tener este modelo para interactuar con la base de datos
+use App\Models\Reporte;
+use App\Models\Documento;
+use Illuminate\Support\Facades\Auth;
 
 class ReporteController extends Controller
 {
     // Muestra la vista para crear un reporte
-    public function crear()
+    public function crear(Request $request)
     {
-        return view('crear'); // Cambié la ruta de la vista para reflejar la estructura correcta
+        $userData = json_encode($request['user']);
+        print($userData);
+
+        return view('crear', ['userData'=>$userData]); // Cambié la ruta de la vista para reflejar la estructura correcta
     }
     
     // Muestra los reportes del usuario
-    public function misReportes()
+    public function misReportes(Request $request)
     {
         // Obtener todos los reportes del usuario (o todos los reportes si no hay autenticación)
         $reportes = Reporte::select('usuarios_usuario.first_name','usuarios_usuario.last_name','documentos_documento.numero_documento','documentos_documento.tipo_documento','documentos_documento.nombre_propietario','reportes_reporte.detalle_reporte','reportes_reporte.ubicacion_perdida','reportes_reporte.estado')
         ->join('documentos_documento', 'reportes_reporte.id_documento_id', '=', 'documentos_documento.id')
         ->join('usuarios_usuario', 'reportes_reporte.id_usuario_id', '=', 'usuarios_usuario.id')
         ->get(); // Si necesitas solo los reportes de un usuario, puedes agregar un filtro como: where('user_id', auth()->id())
+        
         return view('mis', compact('reportes')); // Pasar los reportes a la vista
     }
 
     // Guarda el reporte y genera un número de ticket
     public function guardar(Request $request)
     {
+        //$user = json_encode($request['user']);
+        $user = $request['user'];
+        //print($user);
+        try {
+            $validated = $request->validate([
+                'tipo_documento' => 'required|string|in:cc,ce,ti',
+                'numero_documento' => 'required|string|max:255',
+                'nombre_propietario' => 'required|string|max:255',
+                'ubicacion_perdida' => 'required|string|max:255',
+                'detalle_reporte' => 'required|string|max:255',
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         // Validar los datos del formulario, ahora con los campos tipo_documento y numero_documento
-        $validated = $request->validate([
-            'nombre_reportante' => 'required|string|max:255',
-            'contacto' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'clasificacion' => 'required|string|in:perdido,encontrado',
-            'direccion' => 'required|string|max:255',
-            'tipo_documento' => 'required|string|in:pasaporte,cedula_ciudadania,cedula_extranjeria,tarjeta_identidad',
-            'numero_documento' => 'required|string|max:255',
-        ]);
 
-        // Generar número de ticket (Incidencia 2024-###)
-        $ticket = 'Incidencia 2024-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
+        
+        $tiempo = now();
+        
+        try {
+            // Guardar el documento en la base de datos
+            $documento = Documento::firstOrCreate([
+                'tipo_documento' => $validated['tipo_documento'],
+                'numero_documento' => $validated['numero_documento'],
+                'nombre_propietario' => $validated['nombre_propietario'],
+                'foto_documento' => null,
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
 
-        // Guardar el reporte en la base de datos
-        Reporte::create([
-            'nombre_reportante' => $validated['nombre_reportante'],
-            'contacto' => $validated['contacto'],
-            'descripcion' => $validated['descripcion'],
-            'clasificacion' => $validated['clasificacion'],
-            'direccion' => $validated['direccion'],
-            'tipo_documento' => $validated['tipo_documento'],
-            'numero_documento' => $validated['numero_documento'],
-            'ticket' => $ticket,
-        ]);
-
-        // Redirigir a la vista de creación de reporte con el ticket generado
-        return redirect()->route('crear-reporte')->with('ticket', $ticket);
+        try {
+            // Guardar el reporte en la base de datos
+            Reporte::create([
+                'fecha_reporte' => $tiempo,
+                'ubicacion_perdida' => $validated['ubicacion_perdida'],
+                'detalle_reporte' => $validated['detalle_reporte'],
+                'estado' => 'en_revision',
+                'id_documento_id' => $documento->id,
+                'id_usuario_id' => $user['id'],
+            ]);
+    
+            // Redirigir a la vista de creación de reporte con el ticket generado
+            return redirect()->route('mis-reportes');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     // Buscar reportes

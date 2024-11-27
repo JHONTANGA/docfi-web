@@ -25,8 +25,7 @@ Route::get('/terminos-y-condiciones', [TerminosyCondicionesController::class, 's
 Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('privacy.policy');
 
 // Rutas para los reportes
-Route::get('/reportes/crear', [ReporteController::class, 'crear'])->name('crear-reporte');
-Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('guardar-reporte');  // Guardar el reporte
+Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('guardar-reporte')->middleware('FetchUserData');  // Guardar el reporte
 Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');  // Eliminar reporte
 Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');  // Buscar reportes
 
@@ -34,7 +33,8 @@ Route::get('/login', [AuthController::class, 'showWelcomePage'])->name('login');
 
 # Aquí se deben poner todas las rutas que requieran iniciar sesión para verse
 Route::middleware('JWTAuth')->group(function () {
-    Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');  // Mostrar mis reportes
+    Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes'); // Mostrar mis reportes
+    Route::get('/reportes/crear', [ReporteController::class, 'crear'])->name('crear-reporte')->middleware('FetchUserData');
 });
 
 Route::middleware('CheckAuthenticated')->group(function () {

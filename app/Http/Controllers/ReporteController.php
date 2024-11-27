@@ -17,8 +17,10 @@ class ReporteController extends Controller
     public function misReportes()
     {
         // Obtener todos los reportes del usuario (o todos los reportes si no hay autenticación)
-        $reportes = Reporte::all(); // Si necesitas solo los reportes de un usuario, puedes agregar un filtro como: where('user_id', auth()->id())
-        
+        $reportes = Reporte::select('usuarios_usuario.first_name','usuarios_usuario.last_name','documentos_documento.numero_documento','documentos_documento.tipo_documento','documentos_documento.nombre_propietario','reportes_reporte.detalle_reporte','reportes_reporte.ubicacion_perdida','reportes_reporte.estado')
+        ->join('documentos_documento', 'reportes_reporte.id_documento_id', '=', 'documentos_documento.id')
+        ->join('usuarios_usuario', 'reportes_reporte.id_usuario_id', '=', 'usuarios_usuario.id')
+        ->get(); // Si necesitas solo los reportes de un usuario, puedes agregar un filtro como: where('user_id', auth()->id())
         return view('mis', compact('reportes')); // Pasar los reportes a la vista
     }
 

@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reporte extends Model
+class Documento extends Model
 {
     //use HasFactory;
     public $timestamps = false;
-    protected $table = 'reportes_reporte';
+    protected $table = 'documentos_documento';
     protected $fillable = [
         'id',
-        'id_usuario_id',
-        'id_documento_id',
-        'estado',
-        'detalle_reporte',
-        'ubicacion_perdida',
-        'fecha_reporte',
+        'tipo_documento',
+        'numero_documento',
+        'foto',
+        'nombre_propietario',
     ];
 }

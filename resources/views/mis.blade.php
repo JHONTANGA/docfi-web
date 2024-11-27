@@ -8,11 +8,8 @@
     @vite(['resources/css/EstiloMisReportes.css'])
 </head>
 <body>
-    <header>
-        <div style="padding: 30px; text-align: center;">
-            <img src="C:/Users/geral/Downloads/pruebaproyecto/images/logoDocfi.png" alt="DocFi Logo" style="height: 100px;">
-        </div>
-    </header>
+    <!-- Encabezado -->
+    <x-header/>
 
     <!-- Contenedor de los Reportes -->
     <div class="container">
@@ -22,11 +19,13 @@
         <table class="report-table">
             <thead>
                 <tr>
-                    <th>Ticket</th>
-                    <th>Nombre Reportante</th>
+                    <th>Tipo de documento</th>
+                    <th>Numero de documento</th>
+                    <th>Propietario del Documento</th>
                     <th>Descripción</th>
-                    <th>Clasificación</th>
-                    <th>Dirección</th>
+                    <th>Dirección de perdida</th>
+                    <th>Estado</th>
+                    <th>Reportado por</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -34,11 +33,13 @@
                 <!-- Aquí puedes simular que hay reportes con un array -->
                 @foreach ($reportes as $reporte)
                 <tr>
-                    <td>{{ $reporte['ticket'] }}</td>
-                    <td>{{ $reporte['nombre_reportante'] }}</td>
-                    <td>{{ $reporte['descripcion'] }}</td>
-                    <td>{{ $reporte['clasificacion'] }}</td>
-                    <td>{{ $reporte['direccion'] }}</td>
+                    <td>{{ $reporte['tipo_documento'] }}</td>
+                    <td>{{ $reporte['numero_documento'] }}</td>
+                    <td>{{ $reporte['nombre_propietario'] }}</td>
+                    <td>{{ $reporte['detalle_reporte'] }}</td>
+                    <td>{{ $reporte['ubicacion_perdida'] }}</td>
+                    <td>{{ $reporte['estado'] }}</td>
+                    <td>{{ $reporte['first_name'], $reporte['last_name'] }}</td>
                     <td>
                         <a href="{{ route('crear-reporte') }}" class="btn">Ver Reporte</a>
                     </td>

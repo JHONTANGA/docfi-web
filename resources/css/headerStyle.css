@@ -1,0 +1,200 @@
+/*------- Sección 1 principal Encabezado -----------------------*/
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 95px; /* espacio entre logo y barra */
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+}
+.logo img {
+    height: 80px;
+    margin-right: 60px; /* Separación del borde derecho */
+}
+/* Barra de búsqueda */
+.search-bar { 
+    display: flex;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 700px; /* Ajuste longitud de la barra de búsqueda */
+}
+/* Estilo de el espacio "buscar" */
+.search-bar input { 
+    border: none;
+    padding: 10px;
+    flex: 1;
+    outline: none;
+    border-radius: 25px 0 0 25px;
+}
+/* Icono de búsqueda */
+.search-button { 
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+}
+/* Icono de búsqueda img */
+.search-icon { 
+    width: 20px;
+    height: 17px;
+}
+/* Estilos del menú desplegable para reportes */
+.menu-reportes {
+    position: relative;
+    margin-top: 50px;
+    align-items: flex-start;
+    margin-bottom: 20px; /* Espaciado entre cada bloque */
+    position: relative;
+    top: 75px; /* Mueve los cuadros hacia abajo */
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;    
+    left: -170px; /* Ajusta este valor según lo necesario */
+    width: auto; /* tamaño del acho*/
+    min-width: 100px; /* Define un ancho mínimo */
+    max-width: 300px; /* Opcional: Define un ancho máximo */
+}
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000000;
+}
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+/* Mostrar el menú cuando se activa */
+.dropdown-menu.show {
+    display: block;
+}
+/* -------Menú principal inicio---- ---------------------*/
+.intro-section {
+    text-align: center;
+    padding: 200px 20px; /* tamaño  */
+    background: linear-gradient(45deg, #b9b8b9, #57a0ee);
+    color: #FFFFFF;
+}
+.menu-contenido {
+    display: flex; 
+    justify-content: flex-start; /* Alinear al extremo derecho */
+    align-items: center; 
+    margin-right: 10px; /* Separación del borde derecho */
+    /*margin-top: 10px; /* Espaciado superior */
+    padding: 0;
+    gap: 10px; /* Espaciado entre la primera y la segunda fila */
+    margin-bottom: 10px; /* Espaciado entre cada bloque */
+    justify-content: space-around;
+    position: relative;
+    top: 92px; /* Mueve los cuadros hacia abajo */   
+}
+/* contenido principal Cuadros individuales  */
+.menu-item {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #6d28d9;
+    text-decoration: none;
+    border: 2px solid #b8bec7;
+    border-radius: 1px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap; /* Evita el salto de línea */
+    overflow: hidden; /* Oculta texto sobrante si es necesario */
+    text-overflow: ellipsis; /* Muestra "..." si el texto es muy largo */
+    font-size: 14px; /* Ajusta el tamaño del texto */
+    transition: background-color 0.3s ease, color 0.3s ease;
+   
+    position: relative;
+    left: -150px; /* Mueve los cuadros botones hacia la izquierda */
+ }
+/* Efecto hover (cuando el usuario pasa el mouse) */
+.menu-item:hover {
+    background-color: #6d28d9; /* Fondo al pasar el mouse */
+    color: white; /* Texto blanco */
+}
+
+/* ---------Estilo para la barra lateral ----------------------------------------------*/
+
+/* Barra lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    height: 100%;
+    width: 250px;
+    background: linear-gradient(45deg, #b9b8b9, #57a0ee);
+    color: white;
+    padding: 20px;
+    transition: left 0.3s ease;
+ }
+ 
+ .sidebar ul {
+     display: flex;
+     flex-direction: column; /* Organiza verticalmente */
+     align-items: flex-start; /* Ajusta los elementos hacia el inicio */
+     padding: 60px 0; /* Baja el contenido dentro de la barra lateral */
+ }
+ 
+ .sidebar ul li {
+    margin: 5px 0; /* Espaciado entre ítems */
+    font-size: 25px; /* Ajusta tamaño */
+    line-height: 1.5; /* Reduce separación vertical */
+ }
+ 
+ .sidebar ul li.top-item {
+     margin-top: 30px; /* Baja estos elementos específicos */
+  }
+ 
+ .sidebar ul li a {
+  display: block;
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  font-weight: bold; /* Texto en negrita */
+ 
+ }
+ 
+ .sidebar ul li a:hover {
+  background-color: #a045b3;
+ }
+ 
+ /* Botón toggle */
+ .toggle-btn {
+  font-size: 30px;
+  background-color: transparent;
+  border: none;
+  color: #333;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+ }
+ 
+ /* Estilos cuando la barra lateral se muestra */
+ .sidebar.show {
+  left: 0;
+ }
+ 
+ /* Estilo para el contenido cuando la barra lateral está activa */
+ .content.active {
+  margin-left: 250px;
+ }
+ 

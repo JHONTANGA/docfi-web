@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/welcome-style.css') }}">
     @vite(['resources/css/welcome-style.css'])
 </head>
+
 <body>
     <!-- Encabezado -->
     <header>
@@ -62,11 +64,11 @@
             <!-- Formulario de Login (lado derecho) -->
             <div class="form-right">
                 <h2>Iniciar sesión</h2>
-                <form action="{{ route('login.submit') }}" method="POST">
+                <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <div class="input-group">
                         <label for="usuario">Usuario o Correo:</label>
-                        <input type="text" name="usuario" required>
+                        <input type="text" name="a" required>
                     </div>
                     <div class="input-group">
                         <label for="password">Contraseña:</label>
@@ -76,8 +78,18 @@
                         <button type="submit" class="btn">Iniciar sesión</button>
                     </div>
                 </form>
+                @if($errors->any())
+                <div style="color: red;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
             </div>
         </div>
     </section>
 </body>
+
 </html>

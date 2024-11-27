@@ -20,8 +20,8 @@
             <div class="lateral-container">
                 <div class="sidebar" id="sidebar">
                     <ul>
-                        <li><a href="#">INICIAR SESIÓN</a></li>
-                        <li><a href="#">REGISTRARSE</a></li>
+                        <li><a href="{{ route('welcome') }}">INICIAR SESIÓN</a></li>
+                        <li><a href="{{ route('welcome') }}">REGISTRARSE</a></li>
                     </ul>
                 </div>
                 <button class="toggle-btn" id="toggleBtn-sidebar">☰</button>

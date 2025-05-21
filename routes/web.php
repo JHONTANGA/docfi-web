@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,7 @@ Route::get('/inicio', [AuthController::class, 'showInicioPage'])->name('inicio')
 Route::view('/pqr', 'pqr')->name('pqr');
 Route::view('/contacto', 'contacto')->name('contacto');
 Route::view('/terminos-condiciones', 'terminos-condiciones')->name('terms.conditions');
-Route::view('/privacy-policy', 'privacy')->name('privacy.policy'); 
+Route::view('/privacy-policy', 'privacy')->name('privacy'); // Renombrado aquí
 Route::view('/login', 'login')->name('login');
 
 // Ruta infoDocfi para quienes somos y cómo funciona
@@ -39,6 +40,7 @@ Route::middleware('JWTAuth')->group(function () {
     Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('guardar-reporte');
 });
 
+// Rutas fuera del middleware
 Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');
 Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');
 

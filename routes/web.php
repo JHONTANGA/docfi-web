@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Controllers\AuthController;
@@ -16,7 +17,9 @@ Route::get('/inicio', [AuthController::class, 'showInicioPage'])->name('inicio')
 Route::view('/pqr', 'pqr')->name('pqr');
 Route::view('/contacto', 'contacto')->name('contacto');
 Route::view('/terminos-condiciones', 'terminos-condiciones')->name('terms.conditions');
-Route::view('/privacy-policy', 'privacy')->name('privacy'); // Renombrado aquí
+
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy'); // Nombre de ruta corregido
+
 Route::view('/login', 'login')->name('login');
 
 // Ruta infoDocfi para quienes somos y cómo funciona
@@ -28,6 +31,10 @@ Route::get('/infoDocfi', function () {
 Route::get('/register', function () {
     return redirect('/login');
 })->name('register');
+
+Route::get('/contacto', function () {
+    return view('contacto');
+})->name('contacto');
 
 // Autenticación
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');

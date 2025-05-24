@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOCFI - ¿QUIENES SOMOS?</title>
     <!-- Vinculo al CSS -->
-    <link rel="stylesheet" href="infoDocficss.css">
-    @vite(['resources/css/infoDocficss.css'])
+    <link rel="stylesheet" href="{{ asset('css/infoDocfi.css') }}">
 </head>
 
 <body>

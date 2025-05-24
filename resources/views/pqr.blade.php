@@ -1,71 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
+    <title>Formulario PQR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Reporte</title>
-    <link rel="stylesheet" href="{{ asset('css/EstiloCrearReporte.css') }}">
-    @vite(['resources/css/EstiloCrearReporte.css'])
-</head>
+    <link rel="stylesheet" href="{{ asset('css/EstiloPQR.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  
+</head>
 <body>
-    <header>
-        <div style="padding: 30px; text-align: center;">
-            <a href="{{ route('inicio') }}">
-                <img src="{{asset('images/Web_Images/logoDocfi.png')}}" alt="DocFi Logo" style="height: 100px;">
-            </a>
+
+<header>
+<a href="{{ route('inicio') }}" class="volver-btn">← Volver</a>
+
+    <div style="padding: 20px; text-align: center;">
+         <a href="{{ route('inicio') }}">
+    <img src="{{asset('images/Web_Images/logoDocfi.png')}}" alt="DocFi Logo" style="height: 100px;">
+    </a>
         </div>
     </header>
 
-    <!-- Formulario Crear Reporte -->
-    <div class="form-container">
-        <h1>Crear un Reporte</h1>
-        <form method="POST" action="{{ route('guardar-reporte') }}">
-            @csrf
-            <div class="input-group">
-                <label for="tipo_documento">Tipo de Documento:</label>
-                <select id="tipo_documento" name="tipo_documento" required>
-                    <option value="cc">Cedula de Ciudadania</option>
-                    <option value="ce">Cedula de Extrangería</option>
-                    <option value="ti">Tarjeta de Identidad</option>
-                </select>
-            </div>
-            <!-- Nuevo campo: Número de Documento -->
-            <div class="input-group">
-                <label for="numero_documento">Número de Documento:</label>
-                <input type="text" id="numero_documento" name="numero_documento" placeholder="Escribe el número de documento" required>
-            </div>
-            <div class="input-group">
-                <label for="nombre">Nombre en el Documento:</label>
-                <input type="text" id="nombre_propietario" name="nombre_propietario" placeholder="Propietario del Documento" required>
-            </div>
+<div class="container">
+    <h2>Formulario de Peticiones, Quejas o Reclamos</h2>
 
-            <div class="input-group">
-                <label for="direccion">Ubicación de perdida:</label>
-                <input type="text" id="ubicacion_perdida" name="ubicacion_perdida" placeholder="Escribe la dirección donde se encontró" required>
-            </div>
+    @if(session('success'))
+        <div class="message success">{{ session('success') }}</div>
+    @endif
 
-            <div class="input-group">
-                <label for="detalle_reporte">Detalles:</label>
-                <textarea id="detalle_reporte" name="detalle_reporte" placeholder="Describe brevemente los hechos o detalles adicionales" required></textarea>
-            </div>
+    @if($errors->any())
+        <div class="message error errors">
+            <strong>Se encontraron errores:</strong>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>• {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+    <form action="{{ route('enviar.pqr') }}" method="POST">
+        @csrf
 
+        <label for="nombre">Nombre completo</label>
+        <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" required>
 
-            <button type="submit" class="btn">Generar Reporte</button>
-        </form>
+        <label for="correo">Correo electrónico</label>
+        <input type="email" name="correo" id="correo" value="{{ old('correo') }}" required>
+
+        <label for="telefono">Télefono</label>
+        <input type="text" name="telefono" id="telefono" value="{{ old('telefono') }}" required>
+        
+           
+        <label for="tipo">Tipo de solicitud</label>
+        <select name="tipo" id="tipo" required>
+            <option value="">-- Selecciona una opción --</option>
+            <option value="peticion" {{ old('tipo') == 'peticion' ? 'selected' : '' }}>Petición</option>
+            <option value="queja" {{ old('tipo') == 'queja' ? 'selected' : '' }}>Queja</option>
+            <option value="reclamo" {{ old('tipo') == 'reclamo' ? 'selected' : '' }}>Reclamo</option>
+        </select>
+
+        <label for="detalles">Descripción de la solicitud</label>
+        <textarea name="detalles" id="detalles" placeholder="Escribe tu solicitud aquí..." required>{{ old('detalles') }}</textarea>
+
+        <div class="boton-contenedor">
+          <button class="custom-send-btn">
+           Enviar PQR <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+    </form>
+
+    @if(session('success'))
+    <div class="message success">
+        {{ session('success') }}
+        <br><strong>Guarda tu código de seguimiento:</strong>
+        <div style="margin-top: 8px; background: #f0f0f0; padding: 8px; font-family: monospace;">
+            {{ session('codigo') }}
+        </div>
     </div>
+@endif
+
+  </div>
 
 </body>
-
 </html>

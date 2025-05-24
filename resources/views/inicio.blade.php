@@ -116,6 +116,7 @@
       <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="{{ route('pqr') }}" data-bs-toggle="dropdown">PQR</a>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="{{ route('pqr') }}">Crear PQR</a></li>
+        <li><a class="dropdown-item" href="{{ route('consultar-pqr') }}">Consultar PQR</a></li>
       </ul>
     </div>
 

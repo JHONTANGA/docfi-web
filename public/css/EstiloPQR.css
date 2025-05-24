@@ -1,0 +1,129 @@
+       body {
+            background: #f4f7f8;
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 600px;
+            margin: auto;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea::placeholder,
+         input::placeholder {
+         font-style: italic;
+         color: #888;
+         font-size: 14px;
+         font-family: 'Roboto', sans-serif;
+}
+
+
+        .btn:hover {
+            background-color: #285EAF;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #004455;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+
+        .volver-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #004455;
+            font-weight: bold;
+            text-decoration: none;
+            background-color: #e6f2f4;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .volver-btn:hover {
+            background-color: #5592a1;
+        }
+
+        .boton-contenedor {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .custom-send-btn {
+            background-color: #004455;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            margin-top: 25px;
+            width: 80%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex; /* o inline-flex si lo prefieres */
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+                  
+         .custom-send-btn:hover {
+            background-color: #285EAF; /* Más oscuro al pasar el mouse */
+        }
+          

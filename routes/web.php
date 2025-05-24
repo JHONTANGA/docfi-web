@@ -4,6 +4,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PqrController;
 
 // Página principal
 Route::get('/', function () {
@@ -14,12 +15,11 @@ Route::get('/', function () {
 Route::get('/inicio', [AuthController::class, 'showInicioPage'])->name('inicio');
 
 // Rutas públicas
+Route::view('/reporte', 'reporte')->name('reporte');
 Route::view('/pqr', 'pqr')->name('pqr');
 Route::view('/contacto', 'contacto')->name('contacto');
 Route::view('/terminos-condiciones', 'terminos-condiciones')->name('terms.conditions');
-
 Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy'); // Nombre de ruta corregido
-
 Route::view('/login', 'login')->name('login');
 
 // Ruta infoDocfi para quienes somos y cómo funciona
@@ -36,9 +36,16 @@ Route::get('/contacto', function () {
     return view('contacto');
 })->name('contacto');
 
+// Rutas a pqr
+Route::get('/pqr', [PqrController::class, 'create'])->name('pqr');
+Route::post('/enviar-pqr', [PqrController::class, 'enviar'])->name('enviar.pqr');
+Route::get('/consultar-pqr', [PqrController::class, 'consultar'])->name('consultar-pqr');
+
+
 // Autenticación
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
 
 // Rutas con middleware
 Route::middleware('JWTAuth')->group(function () {

@@ -1,6 +1,6 @@
-<!-- resources/views/privacy-policy.blade.php -->
 
 @extends('layouts.app')
+@include('layouts.header')
 
 @section('content')
 

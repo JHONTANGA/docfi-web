@@ -1,3 +1,5 @@
+@include('layouts.header')
+
 <!DOCTYPE html>
 <html lang="es">
 

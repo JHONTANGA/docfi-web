@@ -13,113 +13,19 @@
       padding: 0;
     }
 
-    /* BARRA LATERAL */
-    .sidebar {
-      width: 220px;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: -180px;
-      background: linear-gradient(to right, #00f2fe, #4facfe);
-      color: #fff;
-      padding: 20px;
-      transition: left 0.3s ease;
-      z-index: 999;
-    }
-
-    .sidebar:hover {
-      left: 0;
-    }
-
-    .sidebar h4 {
-      color: #fff;
-      margin-bottom: 20px;
-    }
-
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      margin: 15px 0;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .hero {
-      background: linear-gradient(to right, #00f2fe, #4facfe);
-      color: #fff;
-      padding: 80px 30px;
+    /* Estilos para centrar el footer */
+    footer .container {
       text-align: center;
+      padding: 1rem 0;
     }
 
-    .hero h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-    }
-
-    .form-container {
-      display: none;
-      background-color: #ffffff;
-      border: 1px solid #dee2e6;
-      padding: 30px;
-      border-radius: 10px;
-      margin-top: 30px;
-    }
-
-    footer {
-      background-color: #f8f9fa;
-      padding: 20px 0;
-      border-top: 1px solid #dee2e6;
-      margin-top: 40px;
-      text-align: center;
-    }
-
-    footer a {
-      color: #007bff;
-      margin: 0 10px;
+    footer .container a {
+      margin: 0 8px;
       text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* BOTÓN PERSONALIZADO DOCFI */
-    .btn-docfi {
-      background: linear-gradient(to right, #00f2fe, #4facfe);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-weight: 500;
-      border-radius: 5px;
-      transition: 0.3s ease;
-    }
-
-    .btn-docfi:hover {
-      opacity: 0.9;
-    }
-
-    /* Ajuste para que el contenido no quede oculto tras la barra lateral */
-    main.content {
-      margin-left: 220px;
-      padding: 20px;
-      min-height: 80vh;
     }
   </style>
 </head>
 <body>
-
-  <!-- BARRA LATERAL -->
-  <div class="sidebar">
-    <h4>DocFi</h4>
-    <a href="#" onclick="mostrarFormulario('login')">Iniciar Sesión</a>
-    <a href="#" onclick="mostrarFormulario('registro')">Registrarse</a>
-  </div>
 
   <!-- MENU SUPERIOR -->
   <div class="d-flex justify-content-end pt-3 pe-3 align-items-center top-menu flex-wrap" style="margin-left: 220px;">

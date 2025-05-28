@@ -4,8 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DocFi - Plataforma de Documentos</title>
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Animate.css CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
   <!-- Estilos propios -->
   <style>
     body {
@@ -44,12 +49,12 @@
 </head>
 <body>
   <header class="header-container">
-    <div class="header-logo">
+    <div class="header-logo animate__animated animate__fadeInDown">
       <img src="{{ asset('images/docfi-logo.png') }}" alt="DocFi Logo" />
       <h3 class="mb-0">DocFi</h3>
     </div>
-    @if (!Request::is('inicio')) {{-- El botón no se muestra si estás en la vista 'inicio' --}}
-   
+    @if (!Request::is('inicio'))
+      {{-- Aquí podrías poner un botón atrás si lo deseas --}}
     @endif
   </header>
 </body>

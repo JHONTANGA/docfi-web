@@ -1,7 +1,23 @@
 {{-- inicio.blade.php --}}
 @include('layouts.header')
 
-<!-- BARRA LATERAL -->
+<!-- ENCABEZADO VISUAL  -->
+<div class="py-5 text-white" style="background: linear-gradient(135deg, #004455, #007788);">
+    <div class="container text-center">
+        <img src="{{ asset('images/docfi-logo.png') }}"
+             alt="Logo DocFi"
+             class="mb-4 animate__animated animate__fadeInDown"
+             style="height: 90px; max-width: 100%;">
+        <h1 class="fw-bold animate__animated animate__fadeInUp" style="font-size: 2.5rem;">
+            Recupera tus documentos perdidos fácilmente
+        </h1>
+        <p class="mt-3 animate__animated animate__fadeIn animate__delay-1s" style="font-size: 1.25rem;">
+            DocFi te conecta con quienes han encontrado tus pertenencias.<br class="d-none d-md-block">
+            Rápido, seguro y gratuito.
+        </p>
+    </div>
+</div>
+
 
 <!-- MENÚ SUPERIOR  -->
 <div class="d-flex justify-content-end pt-3 pe-3 align-items-center top-menu flex-wrap">

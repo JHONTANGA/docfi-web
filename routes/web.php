@@ -20,7 +20,8 @@ Route::view('/pqr', 'pqr')->name('pqr');
 Route::view('/contacto', 'contacto')->name('contacto');
 Route::view('/terminos-condiciones', 'terminos-condiciones')->name('terms.conditions');
 Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy'); // Nombre de ruta corregido
-Route::view('/login', 'login')->name('login');
+// Route::view('/login', 'login')->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Ruta para mostrar el formulario de inicio de sesión
 
 // Ruta infoDocfi para quienes somos y cómo funciona
 Route::get('/infoDocfi', function () {
@@ -46,6 +47,7 @@ Route::get('/consultar-pqr', [PqrController::class, 'consultar'])->name('consult
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
+// Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
 // Rutas con middleware
 Route::middleware('JWTAuth')->group(function () {

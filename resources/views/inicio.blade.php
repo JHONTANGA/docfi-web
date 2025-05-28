@@ -69,47 +69,14 @@
   </div>
 
   <div class="text-center mt-5">
-    <a href="{{ route('consultar-pqr') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">Consultar documento</a>
+    <!-- <a href="{{ route('consultar-pqr') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">Consultar documento</a>
+      -->
+    <a href="{{ route('login') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">
+    Consultar documento
+</a>
     <a href="{{ route('pqr') }}" class="btn btn-outline-primary" style="color: #285EAF; border-color: #285EAF">Reportar documento</a>
   </div>
 </section>
-
-<!-- FORMULARIOS  -->
-<div class="container">
-  <div id="form-login" class="form-container">
-    <h3 class="mb-3">Iniciar Sesión</h3>
-    <form>
-      <div class="mb-3">
-        <label for="loginEmail" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="loginEmail" required>
-      </div>
-      <div class="mb-3">
-        <label for="loginPassword" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="loginPassword" required>
-      </div>
-      <button type="submit" class="btn-docfi">Ingresar</button>
-    </form>
-  </div>
-
-  <div id="form-registro" class="form-container">
-    <h3 class="mb-3">Registrarse</h3>
-    <form>
-      <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" id="nombre" required>
-      </div>
-      <div class="mb-3">
-        <label for="registroEmail" class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" id="registroEmail" required>
-      </div>
-      <div class="mb-3">
-        <label for="registroPassword" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="registroPassword" required>
-      </div>
-      <button type="submit" class="btn-docfi">Registrar</button>
-    </form>
-  </div>
-</div>
 
 <!-- PIE DE PÁGINA -->
 <footer class="text-center mt-5">

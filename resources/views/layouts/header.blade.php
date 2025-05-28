@@ -49,7 +49,7 @@
       <h3 class="mb-0">DocFi</h3>
     </div>
     @if (!Request::is('inicio')) {{-- El botón no se muestra si estás en la vista 'inicio' --}}
-      <button class="btn-back" onclick="history.back()">← Atrás</button>
+   
     @endif
   </header>
 </body>

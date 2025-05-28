@@ -25,6 +25,11 @@ class AuthController extends Controller
         return back()->withErrors(['login' => 'Credenciales inválidas']);
     }
 
+     public function showLoginForm()
+    {
+        return view('login'); // Funcion que muestra el formulario de login
+    }
+
     public function logout(Request $request)
     {
         // Eliminar la cookie que contiene el JWT
@@ -50,4 +55,5 @@ class AuthController extends Controller
     {
         return view('inicio'); // Carga la vista 'inicio.blade.php'
     }
+
 }

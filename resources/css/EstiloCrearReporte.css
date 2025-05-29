@@ -1,0 +1,106 @@
+/* Estilos generales para la página */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Estilo del encabezado */
+header {
+    background-color: #ffffff;
+    padding: 30px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    height: 100px;
+}
+
+/* Estilo del contenedor del formulario */
+.form-container {
+    background-color: #ffffff;
+    padding: 40px;
+    margin: 50px auto;
+    width: 70%;
+    max-width: 800px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #285eaf;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de los grupos de entrada */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.input-group textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+/* Estilo de los campos de tipo de documento y número de documento */
+.input-group select,
+.input-group input[type="text"] {
+    margin-top: 5px;
+}
+
+/* Estilo del botón de enviar */
+.btn {
+    display: inline-block;
+    background-color: #285eaf;
+    color: #fff;
+    font-size: 16px;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #1f4f91;
+}
+
+/* Estilo de la notificación del ticket generado */
+.ticket-notification {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    margin: 20px 0;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.ticket-notification strong {
+    font-weight: bold;
+}

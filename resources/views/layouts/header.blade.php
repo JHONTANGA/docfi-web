@@ -11,19 +11,32 @@
   <!-- Animate.css CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
+  
+    @yield('styles') <!-- linea para que se visualice le formulario pqr -->
+
   <!-- Estilos propios -->
   <style>
+    
     body {
       background-color: #f0f4f8;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding-top: 80px; /* evita que el contenido se oculte debajo del header */
     }
+
     .header-container {
-      background-color: #004455;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: white;
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0;
+       background-color: #004455;
+       padding: 1rem 2rem;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       color: white;
+       z-index: 9999;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
     .header-logo {
       display: flex;
@@ -48,14 +61,20 @@
   </style>
 </head>
 <body>
+
   <header class="header-container">
     <div class="header-logo animate__animated animate__fadeInDown">
-      <img src="{{ asset('images/docfi-logo.png') }}" alt="DocFi Logo" />
+      <a href="{{ route('inicio') }}" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 0.5rem;">
+      <img src="{{ asset('images/docfi-logo.png') }}" alt="DocFi Logo"/>
       <h3 class="mb-0">DocFi</h3>
+      </a>
     </div>
-    @if (Request::is('contacto') || Request::is('ConsultarPqr') || Request::is('infoDocfi') || Request::is('terminos-condiciones'))
+    @if (Request::is('contacto') || Request::is('pqr') || Request::is('ConsultarPqr') || Request::is('infoDocfi') || Request::is('privacy-policy') || Request::is('terminos-condiciones'))
     <button class="btn-back" onclick="history.back()">← Atrás</button>
     @endif
   </header>
+
+  @yield('content')   <!-- linea para que se visualice le formulario pqr -->
+
 </body>
 </html>

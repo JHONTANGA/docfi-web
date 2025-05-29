@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pqrs', function (Blueprint $table) {
+        Schema::create('pqr', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
             $table->string('correo');

@@ -40,7 +40,9 @@ Route::get('/contacto', function () {
 // Rutas a pqr
 Route::get('/pqr', [PqrController::class, 'create'])->name('pqr');
 Route::post('/enviar-pqr', [PqrController::class, 'enviar'])->name('enviar.pqr');
-Route::get('/consultar-pqr', [PqrController::class, 'consultar'])->name('consultar-pqr');
+Route::get('/consultar-pqr', function () {
+    return view('consultar-pqr');
+})->name('consultar-pqr');
 
 
 // Autenticación

@@ -53,8 +53,8 @@
       <img src="{{ asset('images/docfi-logo.png') }}" alt="DocFi Logo" />
       <h3 class="mb-0">DocFi</h3>
     </div>
-    @if (!Request::is('inicio'))
-      {{-- Aquí podrías poner un botón atrás si lo deseas --}}
+    @if (Request::is('contacto') || Request::is('ConsultarPqr') || Request::is('infoDocfi') || Request::is('terminos-condiciones'))
+    <button class="btn-back" onclick="history.back()">← Atrás</button>
     @endif
   </header>
 </body>

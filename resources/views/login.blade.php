@@ -70,8 +70,7 @@
     <!-- Login -->
     <div id="login-form" class="form-group active">
       <h2>Iniciar sesión en Docfi</h2>
-      <form method="POST" action="{{ route('login') }}">
-        @csrf
+      <form>
         <input type="text" name="username" placeholder="No. documento, usuario o correo" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit" class="btn">Iniciar sesión</button>
@@ -82,8 +81,7 @@
     <!-- Registro -->
     <div id="registro-form" class="form-group">
       <h2>Crear cuenta en Docfi</h2>
-      <form method="POST" action="{{ route('register') }}">
-        @csrf
+      <form>
         <input type="text" name="username" placeholder="Nombre de usuario" required>
         <input type="email" name="email" placeholder="Correo electrónico" required>
         <input type="password" name="password" placeholder="Contraseña" required>
@@ -115,6 +113,102 @@
       document.getElementById('login-form').classList.toggle('active');
       document.getElementById('registro-form').classList.toggle('active');
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // LOGIN
+      const loginForm = document.querySelector('#login-form form');
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const username = this.querySelector('input[name="username"]').value;
+        const password = this.querySelector('input[name="password"]').value;
+
+        try {
+          const loginResponse = await fetch("http://127.0.0.1:8001/api/login/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+          });
+
+          const loginData = await loginResponse.json();
+
+          if (!loginResponse.ok) {
+            alert(loginData.error || "Credenciales incorrectas");
+            return;
+          }
+
+          const code = prompt("Se envió un código a tu correo. Ingresa el código:");
+          const verifyResponse = await fetch("http://127.0.0.1:8001/api/login/verificar/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user: username, code: code })
+          });
+
+          const verifyData = await verifyResponse.json();
+
+          if (!verifyResponse.ok) {
+            alert(verifyData.error || "Código incorrecto");
+            return;
+          }
+
+          localStorage.setItem("token", verifyData.token);
+          window.location.href = "{{ route('inicio') }}";
+        } catch (err) {
+          console.error(err);
+          alert("Error de red. Intenta nuevamente.");
+        }
+      });
+
+      // REGISTRO
+      const registerForm = document.querySelector('#registro-form form');
+      registerForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        if (data.password !== data.confirm_password) {
+          alert("Las contraseñas no coinciden.");
+          return;
+        }
+
+        try {
+          const response = await fetch("http://127.0.0.1:8001/api/register/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            alert(result.error || "Error al registrar.");
+            return;
+          }
+
+          const code = prompt("Se envió un código de verificación a tu correo. Ingrésalo para confirmar:");
+
+          const verifyResponse = await fetch("http://127.0.0.1:8001/api/login/verificar/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user: data.username, code: code })
+          });
+
+          const verifyData = await verifyResponse.json();
+
+          if (!verifyResponse.ok) {
+            alert(verifyData.error || "Código incorrecto");
+            return;
+          }
+
+          alert("Registro y verificación exitosos. Ahora puedes iniciar sesión.");
+          toggleForms();
+        } catch (err) {
+          console.error(err);
+          alert("Error de red al registrar.");
+        }
+      });
+    });
   </script>
 </body>
 </html>

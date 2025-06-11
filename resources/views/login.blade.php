@@ -95,13 +95,12 @@
         <input type="text" name="numero_documento" placeholder="Número de documento" required>
         <input type="text" name="telefono" placeholder="Teléfono" required>
         <input type="text" name="direccion" placeholder="Dirección" required>
-        <input type="date" name="fecha_nacimiento" placeholder="Fecha de nacimiento" required>
+        <input type="date" name="fecha_nacimiento" required>
         <select name="tipo_usuario" required>
           <option value="soporte">Soporte</option>
           <option value="usuario">Usuario</option>
         </select>
         <input type="hidden" name="is_staff" value="0">
-        <input type="hidden" name="is_superuser" value="0">
         <button type="submit" class="btn">Registrar</button>
       </form>
       <div class="switch" onclick="toggleForms()">¿Ya tienes cuenta? Inicia sesión</div>
@@ -182,26 +181,12 @@
           const result = await response.json();
 
           if (!response.ok) {
+            console.error(result);
             alert(result.error || "Error al registrar.");
             return;
           }
 
-          const code = prompt("Se envió un código de verificación a tu correo. Ingrésalo para confirmar:");
-
-          const verifyResponse = await fetch("http://127.0.0.1:8001/api/login/verificar/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user: data.username, code: code })
-          });
-
-          const verifyData = await verifyResponse.json();
-
-          if (!verifyResponse.ok) {
-            alert(verifyData.error || "Código incorrecto");
-            return;
-          }
-
-          alert("Registro y verificación exitosos. Ahora puedes iniciar sesión.");
+          alert("Registro exitoso. Ahora puedes iniciar sesión.");
           toggleForms();
         } catch (err) {
           console.error(err);

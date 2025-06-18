@@ -18,21 +18,20 @@
     </div>
 </div>
 
-
 <!-- MENÚ SUPERIOR  -->
 <div class="d-flex justify-content-end pt-3 pe-3 align-items-center top-menu flex-wrap">
   <div class="dropdown me-3">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="{{ route('pqr') }}" data-bs-toggle="dropdown">PQR</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="{{ route('pqr') }}">Crear PQR</a></li>
-      <li><a class="dropdown-item" href="{{ route('consultar-pqr') }}">Consultar PQR</a></li>
+      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('pqr') }}')">Crear PQR</a></li>
+      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('consultarpqr') }}')">Consultar PQR</a></li>
     </ul>
   </div>
   <div class="dropdown me-3">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Reportes</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="{{ route('mis-reportes') }}">Ver reportes</a></li>
-      <li><a class="dropdown-item" href="{{ route('mis-reportes') }}">Mis reportes</a></li>
+      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('mis-reportes') }}')">Ver reportes</a></li>
+      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('mis-reportes') }}')">Mis reportes</a></li>
     </ul>
   </div>
   <div class="dropdown me-3">
@@ -42,15 +41,17 @@
       <li><a class="dropdown-item" href="{{ route('infoDocfi') }}">¿Cómo funciona?</a></li>
     </ul>
   </div>
-  <div class="dropdown me-3">
+  <div class="dropdown me-2">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Mi Perfil</a>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="#" onclick="mostrarFormulario('login'); document.getElementById('form-login').scrollIntoView({ behavior: 'smooth' });">Información de contacto</a></li>
     </ul>
   </div>
+  <!-- Badge sesión -->
+  <div id="sesion-info" class="me-3"></div>
 </div>
 
-<!--  SECCIÓN PRINCIPAL  -->
+<!-- SECCIÓN PRINCIPAL -->
 <section class="container mt-5">
   <div class="text-center mb-5">
     <h1 class="fw-bold" style="color: #004455">Bienvenido a DocFi</h1>
@@ -85,12 +86,12 @@
   </div>
 
   <div class="text-center mt-5">
-    <!-- <a href="{{ route('consultar-pqr') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">Consultar documento</a>
-      -->
     <a href="{{ route('login') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">
-    Consultar documento
-</a>
-    <a href="{{ route('pqr') }}" class="btn btn-outline-primary" style="color: #285EAF; border-color: #285EAF">Reportar documento</a>
+      Consultar documento
+    </a>
+    <a href="{{ route('pqr') }}" class="btn btn-outline-primary" style="color: #285EAF; border-color: #285EAF">
+      Reportar documento
+    </a>
   </div>
 </section>
 
@@ -111,7 +112,33 @@
   function mostrarFormulario(tipo) {
     const loginForm = document.getElementById('form-login');
     const registroForm = document.getElementById('form-registro');
-    loginForm.style.display = tipo === 'login' ? 'block' : 'none';
-    registroForm.style.display = tipo === 'registro' ? 'block' : 'none';
+    if (loginForm && registroForm) {
+      loginForm.style.display = tipo === 'login' ? 'block' : 'none';
+      registroForm.style.display = tipo === 'registro' ? 'block' : 'none';
+    }
   }
+
+  function redirigirProtegido(ruta) {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      window.location.href = ruta;
+    } else {
+      window.location.href = "{{ route('login') }}";
+    }
+  }
+
+  function verificarSesionJWT() {
+    const sesionInfo = document.getElementById("sesion-info");
+    const token = localStorage.getItem("access_token");
+
+    if (!sesionInfo) return;
+
+    if (token) {
+      sesionInfo.innerHTML = `<span class="badge bg-success">Sesión activa</span>`;
+    } else {
+      sesionInfo.innerHTML = `<span class="badge bg-danger">Sesión expirada</span>`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", verificarSesionJWT);
 </script>

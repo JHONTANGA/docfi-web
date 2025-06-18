@@ -1,105 +1,268 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DocFi | @yield('title', 'Encuentra tus documentos')</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f5f8fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DocFi - Plataforma de Documentos</title>
 
-    /* Estilos para centrar el footer */
-    footer .container {
-      text-align: center;
-      padding: 1rem 0;
-    }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    footer .container a {
-      margin: 0 8px;
-      text-decoration: none;
-    }
-  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    @stack('styles')
+
+    <style>
+        /* Aquí van tus estilos CSS existentes para el layout general y el header */
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding-top: 80px; /* Ajustado para el header fijo */
+        }
+
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #004455;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            z-index: 9999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .btn-back {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-back:hover {
+            color: #a0c4ff;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- MENU SUPERIOR -->
-  <div class="d-flex justify-content-end pt-3 pe-3 align-items-center top-menu flex-wrap" style="margin-left: 220px;">
-    <div class="dropdown me-3">
-      <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="{{ route('pqr') }}" data-bs-toggle="dropdown">PQR</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('pqr') }}">Crear PQR</a></li>
-      </ul>
-    </div>
+    <header class="header-container">
+        <div class="header-logo animate__animated animate__fadeInDown">
+            <a href="{{ route('inicio') }}" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                <img src="{{ asset('images/docfi-logo.png') }}" alt="DocFi Logo"/>
+                <h3 class="mb-0">DocFi</h3>
+            </a>
+        </div>
 
-    <div class="dropdown me-3">
-      <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Reportes</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('mis-reportes') }}">Ver reportes</a></li>
-        <li><a class="dropdown-item" href="{{ route('mis-reportes') }}">Mis reportes</a></li>
-      </ul>
-    </div>
+        @if (Request::is('contacto') || Request::is('pqr') || Request::is('consultarpqr') || Request::is('infoDocfi') || Request::is('privacy-policy') || Request::is('terminos-condiciones'))
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span id="estadoSesion" class="badge rounded-pill px-3 py-1 bg-secondary" style="font-size: 0.9rem;">
+                    Verificando sesión...
+                </span>
+                <button class="btn-back" onclick="history.back()">← Atrás</button>
+                {{-- Botón para cerrar sesión --}}
+                <button class="btn-back" onclick="window.cerrarSesion()" title="Cerrar sesión">⎋</button>
+            </div>
+        @endif
+    </header>
 
-    <div class="dropdown me-3">
-      <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Información</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('infoDocfi') }}">¿Quiénes somos?</a></li>
-        <li><a class="dropdown-item" href="{{ route('infoDocfi') }}">¿Cómo funciona?</a></li>
-      </ul>
-    </div>
-
-    <div class="dropdown me-3">
-      <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Mi Perfil</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Información de contacto</a></li>
-        <li><a class="dropdown-item" href="{{ route('privacy.policy') }}">Política de privacidad</a></li>
-        <li><a class="dropdown-item" href="{{ route('terms.conditions') }}">Términos y condiciones</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- SECCIÓN PRINCIPAL -->
-  @hasSection('hero')
-    <div class="hero mt-3">
-      @yield('hero')
-    </div>
-  @endif
-
-  <main class="content">
     @yield('content')
-  </main>
 
-  <footer>
-    <div class="container">
-      <p class="mb-2">
-        <a href="{{ route('terms.conditions') }}">Términos y Condiciones</a> |
-        <a href="{{ route('privacy.policy') }}">Política de Privacidad</a>
-      </p>
-      <small class="text-muted">&copy; 2025 DOCFI. Todos los derechos reservados.</small>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function mostrarFormulario(tipo) {
-      const loginForm = document.getElementById('form-login');
-      const registroForm = document.getElementById('form-registro');
-
-      if (tipo === 'login') {
-        loginForm.style.display = 'block';
-        registroForm.style.display = 'none';
-      } else if (tipo === 'registro') {
-        registroForm.style.display = 'block';
-        loginForm.style.display = 'none';
-      }
+    <script>
+    // Propósito: Decodificar el token JWT para extraer su información (como la fecha de expiración).
+    // Esto es útil para saber cuándo un token está a punto de caducar sin contactar al servidor.
+    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
+    if (typeof window.parseJwt === 'undefined') {
+        window.parseJwt = function(token) {
+            try {
+                const payload = token.split('.')[1]; // Extraer la segunda parte del token
+                // Manejo de Base64 URL safe, común en JWT (reemplazar - por + y _ por /)
+                const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+                // Decodificar Base64 y convertir a objeto JavaScript
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error("Error al decodificar el JWT:", e);
+                return null; // Devolver null si el token no es válido o está corrupto
+            }
+        };
     }
-  </script>
 
-  @stack('scripts')
+    // Propósito: Gestionar la validez y renovación del token de acceso de forma automática.
+    // Se ejecuta al cargar la página y periódicamente para asegurar que la sesión del usuario esté activa.
+    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
+    if (typeof window.verificarYRenovarToken === 'undefined') { // Asegurarse de que no se redeclara
+        window.verificarYRenovarToken = async function() { // CAMBIO: Añadido 'window.'
+            const sesion = document.getElementById("estadoSesion"); // Elemento HTML para mostrar el estado
 
+            const token = localStorage.getItem("access_token");     // Obtener el token de acceso del almacenamiento local
+            const refreshToken = localStorage.getItem("refresh_token"); // Obtener el token de renovación
+
+            // Propósito: Si no hay tokens, la sesión no está iniciada o ha expirado completamente.
+            // Redirigir al usuario a la página de login si la ruta actual requiere autenticación.
+            if (!token || !refreshToken) {
+                console.log("Ausencia de tokens de acceso o renovación. Sesión no establecida o expirada.");
+                actualizarEstadoSesion("expirada"); // Actualizar el estado visual de la sesión
+                return redireccionSiRutaProtegida(); // Redirigir y detener la ejecución de la función
+            }
+
+            try {
+                const payload = window.parseJwt(token); // Decodificar el token de acceso
+                if (!payload) {
+                    throw new Error("El token de acceso es inválido o está corrupto.");
+                }
+
+                const exp = payload.exp * 1000; // Fecha de expiración del token (en milisegundos)
+                const ahora = Date.now();       // Hora actual
+
+                // Propósito: Si el token de acceso expira en menos de 2 minutos, intentar renovarlo.
+                // Esto evita que la sesión del usuario expire mientras está usando la aplicación.
+                if (exp - ahora < 2 * 60 * 1000) {
+                    console.log("Token de acceso próximo a expirar. Iniciando proceso de renovación...");
+                    const response = await fetch("http://127.0.0.1:8001/api/token/refresh/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ refresh: refreshToken }) // Enviar el token de renovación
+                    });
+
+                    if (response.ok) { // Si la renovación es exitosa (código de respuesta 200 OK)
+                        const data = await response.json();
+                        localStorage.setItem("access_token", data.access); // Guardar el nuevo token de acceso
+                        // Nota: Si 'ROTATE_REFRESH_TOKENS' en Django 'settings.py' fuera True,
+                        // 'data.refresh' contendría un nuevo refresh_token y también debería ser guardado aquí.
+                        actualizarEstadoSesion("renovada"); // Actualizar el estado visual a "Sesión renovada"
+                        console.log("Token de acceso renovado con éxito.");
+                    } else {
+                        // Propósito: Capturar y registrar errores si la renovación del token falla.
+                        // Esto suele indicar que el token de renovación también ha expirado o es inválido.
+                        const errorData = await response.json();
+                        console.error("Fallo en la renovación del token. Respuesta del servidor:", errorData);
+                        throw new Error("Error en la renovación del token: " + (errorData.detail || "Error desconocido"));
+                    }
+                } else {
+                    // Propósito: Si el token de acceso tiene suficiente tiempo de validez, no se necesita renovación.
+                    console.log("Sesión activa. El token de acceso es válido por más tiempo.");
+                    actualizarEstadoSesion("activa"); // Actualizar el estado visual a "Sesión activa"
+                }
+            } catch (error) {
+                // Propósito: Manejar cualquier error durante la verificación o renovación del token.
+                // Esto indica que la sesión ya no es válida y el usuario debe volver a iniciar sesión.
+                console.error("Error crítico en la gestión de tokens:", error);
+                localStorage.removeItem("access_token");    // Eliminar el token de acceso
+                localStorage.removeItem("refresh_token");   // Eliminar el token de renovación
+                actualizarEstadoSesion("expirada");         // Actualizar el estado visual a "Sesión expirada"
+                redireccionSiRutaProtegida();               // Redirigir al login
+            }
+        };
+    }
+
+
+    // Propósito: Actualizar el texto y color del indicador de estado de la sesión en el encabezado.
+    function actualizarEstadoSesion(estado) {
+        const sesion = document.getElementById("estadoSesion");
+        if (!sesion) return; // Si el elemento no existe, salir
+
+        switch (estado) {
+            case "activa":
+                sesion.textContent = "Sesión activa";
+                sesion.classList.remove("bg-danger", "bg-secondary");
+                sesion.classList.add("bg-success");
+                break;
+            case "renovada":
+                sesion.textContent = "Sesión renovada";
+                sesion.classList.remove("bg-danger", "bg-secondary");
+                sesion.classList.add("bg-success");
+                break;
+            case "expirada":
+            default:
+                sesion.textContent = "Sesión expirada";
+                sesion.classList.remove("bg-success", "bg-secondary");
+                sesion.classList.add("bg-danger");
+                break;
+        }
+    }
+
+    // Propósito: Redirigir al usuario a la página de login si está intentando acceder a una
+    // ruta que requiere una sesión activa (gestionada por JWT), pero no lo tiene.
+    function redireccionSiRutaProtegida() {
+        // Lista de rutas de Laravel (frontend) que se consideran "protegidas" por el JWT.
+        // Si el token no es válido o no existe, el usuario es redirigido desde el lado del cliente.
+        const rutasProtegidas = ["/pqr", "/consultarpqr", "/contacto", "/infoDocfi"];
+        const rutaActual = window.location.pathname;
+
+        if (rutasProtegidas.some(r => rutaActual.startsWith(r))) {
+            console.log(`Redirigiendo a /login desde JavaScript. La ruta actual "${rutaActual}" es protegida.`);
+            window.location.href = "/login"; // Realizar la redirección
+        }
+    }
+
+    // --- Funciones auxiliares importantes ---
+
+    // Propósito: Realizar peticiones HTTP a la API de Django, añadiendo automáticamente
+    // el token de autorización en el encabezado de la solicitud.
+    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
+    if (typeof window.fetchConToken === 'undefined') { // Asegurarse de que no se redeclara
+        window.fetchConToken = async function(url, options = {}) { // CAMBIO: Añadido 'window.'
+            const token = localStorage.getItem("access_token");
+            options.headers = options.headers || {};
+            options.headers["Authorization"] = "Bearer " + token; // Añadir el encabezado de autorización
+
+            // Asegurarse de que el Content-Type sea JSON si el cuerpo de la petición es un JSON string.
+            if (options.body && typeof options.body === 'string' && options.body.startsWith('{')) {
+                options.headers["Content-Type"] = options.headers["Content-Type"] || "application/json";
+            }
+            return fetch(url, options); // Ejecutar la petición
+        };
+    }
+
+    // Propósito: Finalizar la sesión del usuario eliminando los tokens del almacenamiento local
+    // y redirigiendo a la página de login.
+    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
+    if (typeof window.cerrarSesion === 'undefined') { // Asegurarse de que no se redeclara
+        window.cerrarSesion = function() { // CAMBIO: Añadido 'window.'
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            console.log("Tokens eliminados. Redirigiendo a /login.");
+            window.location.href = "/login";
+        };
+    }
+    // --- Fin de funciones auxiliares ---
+
+    // Propósito: Asegurar que la función de verificación y renovación de token se ejecute
+    // tan pronto como el DOM esté completamente cargado.
+    document.addEventListener("DOMContentLoaded", window.verificarYRenovarToken); // CAMBIO: Añadido 'window.'
+    </script>
+
+    @stack('scripts')
 </body>
 </html>

@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Docfi | Iniciar sesión / Registrarse</title>
-  <link rel="stylesheet" href="{{ asset('css/estilo-docfi.css') }}">
   <style>
     body {
       background-color: #004b5c;
@@ -30,7 +29,7 @@
       text-align: center;
       margin-bottom: 1.5rem;
     }
-    input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
+    input, select {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
@@ -150,7 +149,10 @@
             return;
           }
 
-          localStorage.setItem("token", verifyData.token);
+          
+          localStorage.setItem("access_token", verifyData.access);
+          localStorage.setItem("refresh_token", verifyData.refresh);
+
           window.location.href = "{{ route('inicio') }}";
         } catch (err) {
           console.error(err);

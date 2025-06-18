@@ -1,10 +1,9 @@
-@extends('layouts.header')
+@extends('layouts.app') {{-- ASEGÚRATE DE QUE ESTÁS EXTENDIENDO layouts.app --}}
 
 @section('content')
 <div class="form-container">
     <div class="main-container">
 
-        <!-- Info Card -->
         <div class="info-card">
             <h2><strong>Radica tu PQR</strong></h2>
             <p>
@@ -14,69 +13,60 @@
             </p>
         </div>
 
-        <!-- Formulario -->
         <div class="form-card">
             <h2>Formulario de<br>Peticiones, Quejas o Reclamos</h2>
 
-            @if(session('success'))
-                <div class="message success">{{ session('success') }}</div>
-            @endif
-
-            @if($errors->any())
-                <div class="message error">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>• {{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form action="{{ route('enviar.pqr') }}" method="POST">
+            <form id="formularioPQR">
                 @csrf
 
                 <label for="nombre">Nombre completo</label>
-                <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" required>
+                <input type="text" name="nombre" id="nombre" required>
 
                 <label for="correo">Correo electrónico</label>
-                <input type="email" name="correo" id="correo" value="{{ old('correo') }}" required>
+                <input type="email" name="correo" id="correo" required>
 
                 <label for="telefono">Teléfono</label>
-                <input type="text" name="telefono" id="telefono" value="{{ old('telefono') }}" required>
+                <input type="text" name="telefono" id="telefono" required>
 
-                <label for="tipo">Tipo de solicitud</label>
-                <select name="tipo" id="tipo" required>
+                <label for="tipo_pqrs">Tipo de solicitud</label>
+                <select name="tipo_pqrs" id="tipo_pqrs" required>
                     <option value="">-- Selecciona una opción --</option>
-                    <option value="peticion" {{ old('tipo') == 'peticion' ? 'selected' : '' }}>Petición</option>
-                    <option value="queja" {{ old('tipo') == 'queja' ? 'selected' : '' }}>Queja</option>
-                    <option value="reclamo" {{ old('tipo') == 'reclamo' ? 'selected' : '' }}>Reclamo</option>
+                    <option value="Peticiones">Peticiones</option>
+                    <option value="Quejas">Quejas</option>
+                    <option value="Reclamos">Reclamos</option>
+                    <option value="Sugerencias">Sugerencias</option>
                 </select>
 
+
+                <label for="titulo">Título de la solicitud</label>
+                <input type="text" name="titulo" id="titulo" maxlength="32" required>
+
                 <label for="detalles">Descripción de la solicitud</label>
-                <textarea name="detalles" id="detalles" placeholder="Escribe tu solicitud aquí..." required>{{ old('detalles') }}</textarea>
+                <textarea name="detalles" id="detalles" placeholder="Escribe tu solicitud aquí..." required maxlength="128"></textarea>
+
+                <input type="hidden" name="estado" id="estado" value="Espera">
 
                 <div class="boton-contenedor">
-                    <button class="custom-send-btn">
+                    <button type="submit" class="custom-send-btn">
                         <strong>Enviar PQR</strong> <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
             </form>
 
-            @if(session('codigo'))
-                <div class="message success">
-                    <strong>Guarda tu código de seguimiento:</strong>
-                    <div class="codigo-seguimiento">{{ session('codigo') }}</div>
-                </div>
-            @endif
+            <div id="mensajeCodigo" class="message success" style="display: none;">
+                <strong>Guarda tu código de seguimiento:</strong>
+                <div id="codigoSeguimiento" class="codigo-seguimiento"></div>
+            </div>
+
         </div>
     </div>
 </div>
 @endsection
 
-@section('styles')
+@push('styles') {{-- CORREGIDO: De @section a @push --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <style>
+/* Aquí van tus estilos CSS existentes */
 .form-container {
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
                 url('/images/fondo_pqr.png') no-repeat center center;
@@ -87,7 +77,6 @@
     justify-content: center;
     padding: 60px 20px;
 }
-
 .main-container {
     display: flex;
     flex-wrap: wrap;
@@ -96,14 +85,12 @@
     width: 100%;
     justify-content: center;
 }
-
 .info-card, .form-card {
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     padding: 30px;
 }
-
 .info-card {
     width: 300px;
     height: 300px;
@@ -120,7 +107,6 @@
 }
 .info-card h2 { font-size: 1.5rem; }
 .info-card p { color: black; }
-
 .form-card {
     flex: 2;
     min-width: 350px;
@@ -133,7 +119,6 @@
     margin-bottom: 20px;
     text-align: center;
 }
-
 form label {
     display: block;
     margin: 15px 0 5px;
@@ -154,7 +139,6 @@ form textarea {
     height: 100px;
     resize: vertical;
 }
-
 .boton-contenedor {
     margin-top: 30px;
     text-align: center;
@@ -178,7 +162,6 @@ form textarea {
 .custom-send-btn:hover {
     background: #004455;
 }
-
 .message.success {
     background-color: #e0f7e9;
     border-left: 4px solid #2ecc71;
@@ -202,4 +185,84 @@ form textarea {
     font-family: monospace;
 }
 </style>
-@endsection
+@endpush {{-- CIERRE DE @push --}}
+
+@push('scripts') {{-- CORREGIDO: De @section a @push --}}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado ✅");
+
+    const formulario = document.getElementById("formularioPQR");
+
+    // Agregamos una verificación para asegurarnos de que el formulario exista
+    // antes de intentar añadir un event listener, esto previene errores si el DOM no se carga como se espera.
+    if (formulario) {
+        formulario.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            console.log("Formulario enviado 🚀");
+
+            const token = localStorage.getItem("access_token");
+            
+            if (!token) {
+                console.warn("Token no encontrado ❌");
+                alert("Sesión expirada. Inicia sesión de nuevo.");
+                window.location.href = "{{ route('login') }}";
+                return;
+            }
+
+            // Recopila los datos reales de los campos del formulario
+            const datos = {
+                nombre: document.getElementById("nombre").value,
+                correo: document.getElementById("correo").value,
+                telefono: document.getElementById("telefono").value,
+                tipo_pqrs: document.getElementById("tipo_pqrs").value,
+                titulo: document.getElementById("titulo").value,
+                detalles: document.getElementById("detalles").value,
+                estado: document.getElementById("estado").value, // Este es el campo oculto
+                tomado_por: null // Mantener null si es el comportamiento deseado para tu API
+            };
+
+            console.log("Datos a enviar a la API:", datos);
+
+            try {
+                // Usar fetchConToken para incluir automáticamente el header de autorización
+                // Asegúrate que 'fetchConToken' está definida en 'layouts/app.blade.php' o un script global
+                // y que la URL es la correcta de tu API Django para crear PQRs.
+                const respuesta = await fetchConToken("http://127.0.0.1:8001/api/pqrs/crear/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (respuesta.ok) {
+                    const data = await respuesta.json();
+                    alert("PQR enviada correctamente.");
+                    formulario.reset();
+
+                    if (data.id) {
+                        document.getElementById("codigoSeguimiento").textContent = "ID de seguimiento: " + data.id;
+                        document.getElementById("mensajeCodigo").style.display = "block";
+                    }
+                } else if (respuesta.status === 401) {
+                    alert("Sesión expirada. Inicia sesión nuevamente.");
+                    window.location.href = "{{ route('login') }}";
+                } else {
+                    const error = await respuesta.json();
+                    console.error("Error al enviar la PQR:", error);
+                    alert("Error al enviar la PQR: " + JSON.stringify(error));
+                }
+            } catch (error) {
+                console.error("Error de red ❌", error);
+                alert("Error de red al enviar la PQR.");
+            }
+        });
+    } else {
+        console.error("El formulario con ID 'formularioPQR' no fue encontrado.");
+    }
+});
+
+console.log("Script directo al final de la vista cargado 🔥");
+</script>
+@endpush {{-- CIERRE DE @push --}}

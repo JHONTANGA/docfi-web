@@ -3,51 +3,63 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pqr;
-use Illuminate\Support\Str;
+// Ya no necesitamos Http ni Cookie en este método, los quitamos.
+// use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Cookie;
 
 class PqrController extends Controller
 {
-    // Mostrar el formulario PQR
     public function create()
     {
-        return view('pqr'); // Vista: resources/views/pqr.blade.php
+        return view('pqr');
     }
 
-    // Procesar y guardar el PQR
     public function enviar(Request $request)
     {
+        // Esta parte es para enviar una PQR. Si el envío requiere autenticación JWT,
+        // tendrías que enviarle el token a Laravel de otra forma, o hacer la llamada
+        // a la API directamente desde JavaScript como en el caso de 'consultar'.
+        // Por ahora, asumimos que crear una PQR no necesita que el usuario esté logueado.
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'correo' => 'required|email',
-            'telefono' => 'nullable|string|max:20',
-            'tipo' => 'required|in:peticion,queja,reclamo',
-            'detalles' => 'required|string|max:1000',
+            'nombre'   => 'required|string|max:64',
+            'correo'   => 'required|email|max:64',
+            'telefono' => 'required|string|max:32',
+            'tipo'     => 'required|in:Peticiones,Quejas,Reclamos,Sugerencias',
+            'detalles' => 'required|string|max:128',
         ]);
 
-        // Código único corto
-        $codigo = 'PQR-' . date('ymd') . '-' . strtoupper(Str::random(4));
+        $payload = [
+            'titulo'      => 'PQR de ' . $validated['nombre'],
+            'nombre'      => $validated['nombre'],
+            'correo'      => $validated['correo'],
+            'telefono'    => $validated['telefono'],
+            'tipo_pqrs'   => $validated['tipo'],
+            'detalles'    => $validated['detalles'],
+            'estado'      => 'Espera',
+            'tomado_por'  => null
+        ];
 
-        // Guardar
-        Pqr::create([
-            'nombre' => $request->nombre,
-            'correo' => $request->correo,
-            'telefono' => $request->telefono,
-            'tipo' => $request->tipo,
-            'detalles' => $request->detalles,
-            'codigo' => $codigo
-        ]);
+        try {
+            // Laravel envía la PQR a la API de Django (sin token aquí por simplicidad)
+            $response = \Illuminate\Support\Facades\Http::post('http://127.0.0.1:8001/api/pqrs/crear/', $payload);
 
-        return redirect()->back()->with([
-            'success' => 'Tu PQR ha sido enviada correctamente.',
-            'codigo' => $codigo
-        ]);
+            if ($response->successful()) {
+                return redirect()->route('consultarpqr')->with('success', 'Tu PQR fue enviada. Puedes verla en la lista.');
+            } else {
+                \Log::error('API Error al enviar PQR: ' . $response->body());
+                return back()->withErrors(['No se pudo enviar la PQR. Detalle: ' . $response->status()])->withInput();
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error al conectar con la API para crear PQR: ' . $e->getMessage());
+            return back()->withErrors(['Error al conectar con la API: ' . $e->getMessage()])->withInput();
+        }
     }
 
-    // Mostrar los registros
     public function consultar()
     {
-        $pqr = Pqr::all();
-        return view('consultar-pqr', compact('pqr'));
+        // ¡Aquí el cambio! Laravel solo muestra la vista.
+        // El JavaScript en 'consultarpqr.blade.php' será quien haga la llamada a la API
+        // usando el token que tenga en el Local Storage.
+        return view('consultarpqr');
     }
 }

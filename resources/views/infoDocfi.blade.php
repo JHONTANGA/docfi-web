@@ -1,4 +1,4 @@
-@include('layouts.header')
+@include('layouts.app')
 
 <!DOCTYPE html>
 <html lang="es">
@@ -141,9 +141,9 @@
     <!-- Footer -->
     <footer class="text-center mt-5" style="background-color: #004455; color: white; padding: 15px 0;">
         <p class="mb-1">© 2025 DOCFI. Todos los derechos reservados.</p>
-        <a href="{{ route('terms.conditions') }}" class="text-white me-2">Términos y condiciones</a> |
+        <a href="{{ route('terminos-condiciones') }}" class="text-white me-2">Términos y condiciones</a> |
         <a href="#" class="text-white mx-2">Política de cookies</a> |
-        <a href="{{ route('privacy.policy') }}" class="text-white ms-2">Política de privacidad</a>
+        <a href="{{ route('privacy-policy') }}" class="text-white ms-2">Política de privacidad</a>
     </footer>
 
     <!-- Scripts -->

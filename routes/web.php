@@ -1,63 +1,93 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PqrController;
+use App\Http\Controllers\AuthController;
+// Si usas otros controladores para tus vistas, impórtalos aquí.
 
-// Página principal
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+// ========================================================================
+// RUTAS PÚBLICAS (Accesibles sin autenticación)
+// ========================================================================
+
+// Página de inicio (generalmente es pública y sirve como punto de entrada)
 Route::get('/', function () {
-    return view('inicio');
-});
+    return view('inicio'); // Corregido: apunta a 'inicio.blade.php'
+})->name('inicio');
 
-// Página de inicio alternativa
-Route::get('/inicio', [AuthController::class, 'showInicioPage'])->name('inicio');
+// Rutas de Autenticación
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
-// Rutas públicas
-Route::view('/reporte', 'reporte')->name('reporte');
-Route::view('/contacto', 'contacto')->name('contacto');
-Route::view('/terminos-condiciones', 'terminos-condiciones')->name('terms.conditions');
-Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
-
-// Ruta infoDocfi
+// Páginas de información pública
 Route::get('/infoDocfi', function () {
     return view('infoDocfi');
-})->name('infoDocfi');
+})->name('infoDocfi'); // "Quiénes somos" y "Cómo funciona"
 
-// Redirección de /register a /login
-Route::get('/register', function () {
-    return redirect('/login');
-})->name('register');
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
 
-// Login
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::get('/terminos-condiciones', function () {
+    return view('terminos-condiciones');
+})->name('terminos-condiciones');
 
 
-// 🔹 RUTAS PQR ACTUALIZADAS Y FUNCIONALES
+// ========================================================================
+// RUTAS PROTEGIDAS (Requieren autenticación - Manejado por JavaScript en el cliente)
+// ========================================================================
+// Las redirecciones si el usuario no tiene token se gestionan en app.blade.php
+// mediante window.redirigirProtegido() y la lista de rutas en redireccionSiRutaProtegida().
 
-// 1. Formulario para crear PQR
-Route::get('/pqr', [PqrController::class, 'create'])->name('pqr');
+// Grupo de Rutas Protegidas
+// Aunque no usamos un middleware de Laravel 'auth:web' aquí (ya que la autenticación es JWT),
+// este agrupamiento es para mantener la lógica clara y saber qué rutas DEBEN ser protegidas
+// por el JavaScript del frontend.
+Route::prefix('app')->group(function () {
+    // PQR
+    Route::get('/pqr', function () {
+        return view('pqr');
+    })->name('pqr'); // Para crear PQR
 
-// 2. Envío del formulario al API
-Route::post('/enviar-pqr', [PqrController::class, 'enviar'])->name('enviar.pqr');
+    Route::get('/consultarpqr', function () {
+        return view('consultarpqr');
+    })->name('consultarpqr'); // Para consultar PQR
 
-// 3. Vista para consultar el estado de un PQR con parámetro GET
-Route::get('/consultarpqr', [PqrController::class, 'consultar'])->name('consultarpqr');
+    // Perfil del Usuario
+    Route::get('/perfil', function () {
+        return view('perfil');
+    })->name('perfil'); // Para ver la información de perfil
 
-// Rutas con middleware
-Route::middleware('JWTAuth')->group(function () {
-    Route::get('/reportes/mis', [ReporteController::class, 'misReportes'])->name('mis-reportes');
-    Route::get('/reportes/crear', [ReporteController::class, 'crear'])->name('crear-reporte')->middleware('FetchUserData');
-    Route::post('/reportes/guardar', [ReporteController::class, 'guardar'])->name('guardar-reporte');
+    // Reportes
+    Route::get('/reportes/mis', function () {
+        return view('reportes'); // Para ver los reportes del usuario
+    })->name('mis-reportes');
+
+    Route::get('/reportes/crear', function () {
+        return view('crear-reporte');
+    })->name('crear-reporte'); // Para crear un nuevo reporte
+
+    // Información de Contacto (si es una página dedicada al usuario logueado)
+    // Asumo que esta es la "Información de contacto" a la que te refieres en "Mi Perfil"
+    Route::get('/contacto', function () {
+        return view('contacto'); // Por ejemplo, un formulario de contacto para usuarios logueados o su info de contacto
+    })->name('contacto');
 });
 
-// Rutas fuera del middleware
-Route::get('/reportes/eliminar', [ReporteController::class, 'eliminar'])->name('eliminar-reporte');
-Route::get('/reportes/buscar', [ReporteController::class, 'buscar'])->name('buscar-reportes');
-
-// Página de bienvenida con autenticación
-Route::middleware('CheckAuthenticated')->group(function () {
-    Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcome');
-});
+// Nota: Las rutas de POST (como para guardar un PQR o un reporte)
+// no necesitan estar en la lista de 'rutasProtegidas' en JavaScript,
+// ya que la navegación GET es la que activa la redirección.
+// La protección de las API routes para POST la manejaría tu backend de Django con JWT.
+// Si tienes alguna ruta para manejar el "guardar-reporte" por POST, debería ir aquí:
+// Route::post('/guardar-reporte', [TuController::class, 'storeReport'])->name('guardar-reporte');

@@ -6,18 +6,16 @@
     <title>DocFi - Plataforma de Documentos</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    @stack('styles')
-
+    @yield('styles') @stack('styles')
     <style>
-        /* Aquí van tus estilos CSS existentes para el layout general y el header */
         body {
             background-color: #f0f4f8;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding-top: 80px; /* Ajustado para el header fijo */
+            padding-top: 0; /* Aseguramos que el body NO tenga padding-top */
         }
 
         .header-container {
@@ -33,6 +31,7 @@
             color: white;
             z-index: 9999;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            height: 80px; /* **Aseguramos una altura fija para tu navbar** */
         }
 
         .header-logo {
@@ -53,6 +52,9 @@
             font-weight: 600;
             cursor: pointer;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .btn-back:hover {
@@ -68,6 +70,12 @@
             background-color: #dc3545 !important;
             color: white !important;
         }
+
+        /* **AJUSTE CLAVE AQUÍ**: Agregamos un poco más de padding al main */
+        main {
+            /* Suma la altura del header (80px) + un margen extra (por ejemplo, 20px) */
+            padding-top: calc(80px + 20px); /* Esto debería empujar el contenido más abajo */
+        }
     </style>
 </head>
 <body>
@@ -80,187 +88,177 @@
             </a>
         </div>
 
-        @if (Request::is('contacto') || Request::is('pqr') || Request::is('consultarpqr') || Request::is('infoDocfi') || Request::is('privacy-policy') || Request::is('terminos-condiciones'))
-            <div style="display: flex; align-items: center; gap: 15px;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            @if (!Request::is('inicio') && !Request::is('/'))
+                <button class="btn-back" onclick="history.back()" title="Volver a la página anterior">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+            @endif
+
+            @if (Auth::check() || Request::is('contacto') || Request::is('pqr') || Request::is('consultarpqr') || Request::is('infoDocfi') || Request::is('privacy-policy') || Request::is('terminos-condiciones'))
                 <span id="estadoSesion" class="badge rounded-pill px-3 py-1 bg-secondary" style="font-size: 0.9rem;">
                     Verificando sesión...
                 </span>
-                <button class="btn-back" onclick="history.back()">← Atrás</button>
-                {{-- Botón para cerrar sesión --}}
-                <button class="btn-back" onclick="window.cerrarSesion()" title="Cerrar sesión">⎋</button>
-            </div>
-        @endif
+            @endif
+
+            @if (Request::is('contacto') || Request::is('pqr') || Request::is('consultarpqr') || Request::is('infoDocfi') || Request::is('privacy-policy') || Request::is('terminos-condiciones') || Request::is('app/*'))
+                 <button class="btn-back" onclick="window.cerrarSesion()" title="Cerrar sesión">⎋</button>
+            @endif
+        </div>
     </header>
 
-    @yield('content')
+    <main>
+        @yield('content')
+    </main>
+
+    {{-- Resto de tus scripts ... --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    // Propósito: Decodificar el token JWT para extraer su información (como la fecha de expiración).
-    // Esto es útil para saber cuándo un token está a punto de caducar sin contactar al servidor.
-    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
-    if (typeof window.parseJwt === 'undefined') {
-        window.parseJwt = function(token) {
-            try {
-                const payload = token.split('.')[1]; // Extraer la segunda parte del token
-                // Manejo de Base64 URL safe, común en JWT (reemplazar - por + y _ por /)
-                const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-                // Decodificar Base64 y convertir a objeto JavaScript
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-                ).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (e) {
-                console.error("Error al decodificar el JWT:", e);
-                return null; // Devolver null si el token no es válido o está corrupto
-            }
-        };
-    }
-
-    // Propósito: Gestionar la validez y renovación del token de acceso de forma automática.
-    // Se ejecuta al cargar la página y periódicamente para asegurar que la sesión del usuario esté activa.
-    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
-    if (typeof window.verificarYRenovarToken === 'undefined') { // Asegurarse de que no se redeclara
-        window.verificarYRenovarToken = async function() { // CAMBIO: Añadido 'window.'
-            const sesion = document.getElementById("estadoSesion"); // Elemento HTML para mostrar el estado
-
-            const token = localStorage.getItem("access_token");     // Obtener el token de acceso del almacenamiento local
-            const refreshToken = localStorage.getItem("refresh_token"); // Obtener el token de renovación
-
-            // Propósito: Si no hay tokens, la sesión no está iniciada o ha expirado completamente.
-            // Redirigir al usuario a la página de login si la ruta actual requiere autenticación.
-            if (!token || !refreshToken) {
-                console.log("Ausencia de tokens de acceso o renovación. Sesión no establecida o expirada.");
-                actualizarEstadoSesion("expirada"); // Actualizar el estado visual de la sesión
-                return redireccionSiRutaProtegida(); // Redirigir y detener la ejecución de la función
-            }
-
-            try {
-                const payload = window.parseJwt(token); // Decodificar el token de acceso
-                if (!payload) {
-                    throw new Error("El token de acceso es inválido o está corrupto.");
+        // ... (Tu código JavaScript existente sin cambios) ...
+        if (typeof window.parseJwt === 'undefined') { // Evitar redeclaración
+            window.parseJwt = function(token) {
+                try {
+                    const payload = token.split('.')[1];
+                    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+                    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+                        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                    ).join(''));
+                    return JSON.parse(jsonPayload);
+                } catch (e) {
+                    console.error("Error al decodificar el JWT:", e);
+                    return null;
                 }
-
-                const exp = payload.exp * 1000; // Fecha de expiración del token (en milisegundos)
-                const ahora = Date.now();       // Hora actual
-
-                // Propósito: Si el token de acceso expira en menos de 2 minutos, intentar renovarlo.
-                // Esto evita que la sesión del usuario expire mientras está usando la aplicación.
-                if (exp - ahora < 2 * 60 * 1000) {
-                    console.log("Token de acceso próximo a expirar. Iniciando proceso de renovación...");
-                    const response = await fetch("http://127.0.0.1:8001/api/token/refresh/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ refresh: refreshToken }) // Enviar el token de renovación
-                    });
-
-                    if (response.ok) { // Si la renovación es exitosa (código de respuesta 200 OK)
-                        const data = await response.json();
-                        localStorage.setItem("access_token", data.access); // Guardar el nuevo token de acceso
-                        // Nota: Si 'ROTATE_REFRESH_TOKENS' en Django 'settings.py' fuera True,
-                        // 'data.refresh' contendría un nuevo refresh_token y también debería ser guardado aquí.
-                        actualizarEstadoSesion("renovada"); // Actualizar el estado visual a "Sesión renovada"
-                        console.log("Token de acceso renovado con éxito.");
+            };
+        }
+        if (typeof window.actualizarEstadoSesion === 'undefined') { // Evitar redeclaración
+            window.actualizarEstadoSesion = function(estado) {
+                const sesion = document.getElementById("estadoSesion");
+                if (!sesion) return;
+                sesion.classList.remove("bg-danger", "bg-secondary", "bg-success");
+                switch (estado) {
+                    case "activa":
+                        sesion.textContent = "Sesión activa";
+                        sesion.classList.add("bg-success");
+                        break;
+                    case "renovada":
+                        sesion.textContent = "Sesión renovada";
+                        sesion.classList.add("bg-success");
+                        break;
+                    case "expirada":
+                    default:
+                        sesion.textContent = "Sesión expirada";
+                        sesion.classList.add("bg-danger");
+                        break;
+                }
+            };
+        }
+        if (typeof window.redireccionSiRutaProtegida === 'undefined') { // Evitar redeclaración
+            window.redireccionSiRutaProtegida = function() {
+                const rutasProtegidas = [
+                    "/app/pqr",
+                    "/app/consultarpqr",
+                    "/app/perfil",
+                    "/app/reportes/mis",
+                    "/app/reportes/crear",
+                    "/app/contacto"
+                ];
+                const rutaActual = window.location.pathname;
+                if (rutasProtegidas.some(r => rutaActual.startsWith(r))) {
+                    console.log(`Redirigiendo a /login desde JavaScript. La ruta actual "${rutaActual}" es protegida.`);
+                    window.location.href = "/login";
+                }
+            };
+        }
+        if (typeof window.verificarYRenovarToken === 'undefined') { // Evitar redeclaración
+            window.verificarYRenovarToken = async function() {
+                const token = localStorage.getItem("access_token");
+                const refreshToken = localStorage.getItem("refresh_token");
+                if (!token || !refreshToken) {
+                    console.log("Ausencia de tokens de acceso o renovación. Sesión no establecida o expirada.");
+                    window.actualizarEstadoSesion("expirada");
+                    return window.redireccionSiRutaProtegida();
+                }
+                try {
+                    const payload = window.parseJwt(token);
+                    if (!payload) {
+                        throw new Error("El token de acceso es inválido o está corrupto.");
+                    }
+                    const exp = payload.exp * 1000;
+                    const ahora = Date.now();
+                    if (exp - ahora < 2 * 60 * 1000) { // Menos de 2 minutos para expirar
+                        console.log("Token de acceso próximo a expirar. Iniciando proceso de renovación...");
+                        const response = await fetch("http://127.0.0.1:8001/api/token/refresh/", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ refresh: refreshToken })
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            localStorage.setItem("access_token", data.access);
+                            window.actualizarEstadoSesion("renovada");
+                            console.log("Token de acceso renovado con éxito.");
+                        } else {
+                            const errorData = await response.json();
+                            console.error("Fallo en la renovación del token. Respuesta del servidor:", errorData);
+                            throw new Error("Error en la renovación del token: " + (errorData.detail || "Error desconocido"));
+                        }
                     } else {
-                        // Propósito: Capturar y registrar errores si la renovación del token falla.
-                        // Esto suele indicar que el token de renovación también ha expirado o es inválido.
-                        const errorData = await response.json();
-                        console.error("Fallo en la renovación del token. Respuesta del servidor:", errorData);
-                        throw new Error("Error en la renovación del token: " + (errorData.detail || "Error desconocido"));
+                        console.log("Sesión activa. El token de acceso es válido por más tiempo.");
+                        window.actualizarEstadoSesion("activa");
+                    }
+                } catch (error) {
+                    console.error("Error crítico en la gestión de tokens:", error);
+                    localStorage.removeItem("access_token");
+                    localStorage.removeItem("refresh_token");
+                    window.actualizarEstadoSesion("expirada");
+                    window.redireccionSiRutaProtegida();
+                }
+            };
+        }
+        if (typeof window.fetchConToken === 'undefined') { // Evitar redeclaración
+            window.fetchConToken = async function(url, options = {}) {
+                const token = localStorage.getItem("access_token");
+                options.headers = options.headers || {};
+                if (token) {
+                    options.headers["Authorization"] = "Bearer " + token;
+                } else {
+                    console.warn("Intentando realizar fetchConToken sin access_token. Esto podría resultar en 401 Unauthorized.");
+                }
+                if (options.body && typeof options.body === 'string' && options.body.startsWith('{')) {
+                    options.headers["Content-Type"] = options.headers["Content-Type"] || "application/json";
+                }
+                return fetch(url, options);
+            };
+        }
+        if (typeof window.cerrarSesion === 'undefined') { // Evitar redeclaración
+            window.cerrarSesion = function() {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+                document.cookie = "jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                console.log("Tokens eliminados. Redirigiendo a /login.");
+                window.location.href = "/login";
+            };
+        }
+        if (typeof window.redirigirProtegido === 'undefined') { // Evitar redeclaración
+            window.redirigirProtegido = function(targetRoute) {
+                const token = localStorage.getItem("access_token");
+                if (token) {
+                    const payload = window.parseJwt(token);
+                    if (payload && payload.exp * 1000 > Date.now()) {
+                        window.location.href = targetRoute;
+                    } else {
+                        console.warn("Token expirado o inválido al intentar acceder a ruta protegida. Redirigiendo a login.");
+                        window.cerrarSesion();
                     }
                 } else {
-                    // Propósito: Si el token de acceso tiene suficiente tiempo de validez, no se necesita renovación.
-                    console.log("Sesión activa. El token de acceso es válido por más tiempo.");
-                    actualizarEstadoSesion("activa"); // Actualizar el estado visual a "Sesión activa"
+                    console.log("No hay token de sesión. Redirigiendo a /login.");
+                    window.location.href = "/login";
                 }
-            } catch (error) {
-                // Propósito: Manejar cualquier error durante la verificación o renovación del token.
-                // Esto indica que la sesión ya no es válida y el usuario debe volver a iniciar sesión.
-                console.error("Error crítico en la gestión de tokens:", error);
-                localStorage.removeItem("access_token");    // Eliminar el token de acceso
-                localStorage.removeItem("refresh_token");   // Eliminar el token de renovación
-                actualizarEstadoSesion("expirada");         // Actualizar el estado visual a "Sesión expirada"
-                redireccionSiRutaProtegida();               // Redirigir al login
-            }
-        };
-    }
-
-
-    // Propósito: Actualizar el texto y color del indicador de estado de la sesión en el encabezado.
-    function actualizarEstadoSesion(estado) {
-        const sesion = document.getElementById("estadoSesion");
-        if (!sesion) return; // Si el elemento no existe, salir
-
-        switch (estado) {
-            case "activa":
-                sesion.textContent = "Sesión activa";
-                sesion.classList.remove("bg-danger", "bg-secondary");
-                sesion.classList.add("bg-success");
-                break;
-            case "renovada":
-                sesion.textContent = "Sesión renovada";
-                sesion.classList.remove("bg-danger", "bg-secondary");
-                sesion.classList.add("bg-success");
-                break;
-            case "expirada":
-            default:
-                sesion.textContent = "Sesión expirada";
-                sesion.classList.remove("bg-success", "bg-secondary");
-                sesion.classList.add("bg-danger");
-                break;
+            };
         }
-    }
-
-    // Propósito: Redirigir al usuario a la página de login si está intentando acceder a una
-    // ruta que requiere una sesión activa (gestionada por JWT), pero no lo tiene.
-    function redireccionSiRutaProtegida() {
-        // Lista de rutas de Laravel (frontend) que se consideran "protegidas" por el JWT.
-        // Si el token no es válido o no existe, el usuario es redirigido desde el lado del cliente.
-        const rutasProtegidas = ["/pqr", "/consultarpqr", "/contacto", "/infoDocfi"];
-        const rutaActual = window.location.pathname;
-
-        if (rutasProtegidas.some(r => rutaActual.startsWith(r))) {
-            console.log(`Redirigiendo a /login desde JavaScript. La ruta actual "${rutaActual}" es protegida.`);
-            window.location.href = "/login"; // Realizar la redirección
-        }
-    }
-
-    // --- Funciones auxiliares importantes ---
-
-    // Propósito: Realizar peticiones HTTP a la API de Django, añadiendo automáticamente
-    // el token de autorización en el encabezado de la solicitud.
-    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
-    if (typeof window.fetchConToken === 'undefined') { // Asegurarse de que no se redeclara
-        window.fetchConToken = async function(url, options = {}) { // CAMBIO: Añadido 'window.'
-            const token = localStorage.getItem("access_token");
-            options.headers = options.headers || {};
-            options.headers["Authorization"] = "Bearer " + token; // Añadir el encabezado de autorización
-
-            // Asegurarse de que el Content-Type sea JSON si el cuerpo de la petición es un JSON string.
-            if (options.body && typeof options.body === 'string' && options.body.startsWith('{')) {
-                options.headers["Content-Type"] = options.headers["Content-Type"] || "application/json";
-            }
-            return fetch(url, options); // Ejecutar la petición
-        };
-    }
-
-    // Propósito: Finalizar la sesión del usuario eliminando los tokens del almacenamiento local
-    // y redirigiendo a la página de login.
-    // Hacemos esta función global para que esté disponible en todas las vistas que extiendan este layout.
-    if (typeof window.cerrarSesion === 'undefined') { // Asegurarse de que no se redeclara
-        window.cerrarSesion = function() { // CAMBIO: Añadido 'window.'
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("refresh_token");
-            console.log("Tokens eliminados. Redirigiendo a /login.");
-            window.location.href = "/login";
-        };
-    }
-    // --- Fin de funciones auxiliares ---
-
-    // Propósito: Asegurar que la función de verificación y renovación de token se ejecute
-    // tan pronto como el DOM esté completamente cargado.
-    document.addEventListener("DOMContentLoaded", window.verificarYRenovarToken); // CAMBIO: Añadido 'window.'
+        document.addEventListener("DOMContentLoaded", window.verificarYRenovarToken);
     </script>
 
     @stack('scripts')

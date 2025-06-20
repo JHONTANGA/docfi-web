@@ -1,7 +1,7 @@
-{{-- inicio.blade.php --}}
-@include('layouts.header')
+{{-- resources/views/inicio.blade.php --}}
+@extends('layouts.app') {{-- Esto extiende el layout base, incluyendo su header fijo y JS --}}
 
-<!-- ENCABEZADO VISUAL  -->
+@section('content')
 <div class="py-5 text-white" style="background: linear-gradient(135deg, #004455, #007788);">
     <div class="container text-center">
         <img src="{{ asset('images/docfi-logo.png') }}"
@@ -18,40 +18,45 @@
     </div>
 </div>
 
-<!-- MENÚ SUPERIOR  -->
+{{-- ESTE ES EL MENÚ DE NAVEGACIÓN QUE ME PROPORCIONASTE DENTRO DE inicio.blade.php --}}
+{{-- No lo vamos a mover para no desordenar tu estructura actual a estas alturas --}}
 <div class="d-flex justify-content-end pt-3 pe-3 align-items-center top-menu flex-wrap">
   <div class="dropdown me-3">
-    <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="{{ route('pqr') }}" data-bs-toggle="dropdown">PQR</a>
+    <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">PQR</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('pqr') }}')">Crear PQR</a></li>
-      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('consultarpqr') }}')">Consultar PQR</a></li>
+      {{-- Ahora window.redirigirProtegido SÍ existe y se usa con la ruta completa --}}
+      <li><a class="dropdown-item" href="#" onclick="window.redirigirProtegido('{{ route('pqr') }}')">Crear PQR</a></li>
+      <li><a class="dropdown-item" href="#" onclick="window.redirigirProtegido('{{ route('consultarpqr') }}')">Consultar PQR</a></li>
     </ul>
   </div>
   <div class="dropdown me-3">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Reportes</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('mis-reportes') }}')">Ver reportes</a></li>
-      <li><a class="dropdown-item" href="#" onclick="redirigirProtegido('{{ route('mis-reportes') }}')">Mis reportes</a></li>
+      {{-- 'mis-reportes' tienen rutas definidas en web.php --}}
+      <li><a class="dropdown-item" href="#" onclick="window.redirigirProtegido('{{ route('mis-reportes') }}')">Mis reportes</a></li>
     </ul>
   </div>
   <div class="dropdown me-3">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Información</a>
     <ul class="dropdown-menu">
+      {{-- Estas rutas son públicas, no necesitan redirigirProtegido --}}
       <li><a class="dropdown-item" href="{{ route('infoDocfi') }}">¿Quiénes somos?</a></li>
       <li><a class="dropdown-item" href="{{ route('infoDocfi') }}">¿Cómo funciona?</a></li>
     </ul>
   </div>
-  <div class="dropdown me-2">
+<div class="dropdown me-2">
     <a class="dropdown-toggle text-primary fw-bold text-decoration-none" href="#" data-bs-toggle="dropdown">Mi Perfil</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#" onclick="mostrarFormulario('login'); document.getElementById('form-login').scrollIntoView({ behavior: 'smooth' });">Información de contacto</a></li>
+      {{-- Usar window.redirigirProtegido para asegurar la verificación de sesión --}}
+      <li><a class="dropdown-item" href="#" onclick="window.redirigirProtegido('{{ route('perfil') }}')">Ver Perfil</a></li>
+      
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="#" onclick="window.cerrarSesion()">Cerrar Sesión</a></li>
     </ul>
-  </div>
-  <!-- Badge sesión -->
+</div>
   <div id="sesion-info" class="me-3"></div>
 </div>
 
-<!-- SECCIÓN PRINCIPAL -->
 <section class="container mt-5">
   <div class="text-center mb-5">
     <h1 class="fw-bold" style="color: #004455">Bienvenido a DocFi</h1>
@@ -89,56 +94,57 @@
     <a href="{{ route('login') }}" class="btn btn-primary me-2" style="background-color: #285EAF; border: none">
       Consultar documento
     </a>
-    <a href="{{ route('pqr') }}" class="btn btn-outline-primary" style="color: #285EAF; border-color: #285EAF">
+    {{-- Este botón de "Reportar documento" ahora usa redirigirProtegido --}}
+    <a href="#" onclick="window.redirigirProtegido('{{ route('crear-reporte') }}')" class="btn btn-outline-primary" style="color: #285EAF; border-color: #285EAF">
       Reportar documento
     </a>
   </div>
 </section>
 
-<!-- PIE DE PÁGINA -->
 <footer class="text-center mt-5">
   <div class="container">
     <p class="mb-2">
-      <a href="{{ route('terms.conditions') }}">Términos y Condiciones</a> |
-      <a href="{{ route('privacy.policy') }}">Política de Privacidad</a>
+      <a href="{{ route('terminos-condiciones') }}">Términos y Condiciones</a> |
+      <a href="{{ route('privacy-policy') }}">Política de Privacidad</a>
     </p>
     <small class="text-muted">&copy; 2025 DOCFI. Todos los derechos reservados.</small>
   </div>
 </footer>
+@endsection
 
-<!-- JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@push('scripts')
 <script>
-  function mostrarFormulario(tipo) {
-    const loginForm = document.getElementById('form-login');
-    const registroForm = document.getElementById('form-registro');
-    if (loginForm && registroForm) {
-      loginForm.style.display = tipo === 'login' ? 'block' : 'none';
-      registroForm.style.display = tipo === 'registro' ? 'block' : 'none';
+    // Esta función `mostrarFormulario` probablemente pertenece a tu lógica de login/registro
+    // Si esta función es usada en otras vistas, también debería ser global en app.blade.php
+    // Por ahora, la mantenemos aquí asumiendo que solo se usa en `inicio.blade.php` si hay un formulario aquí.
+    // Si te da error "mostrarFormulario is not defined" en otras páginas, avísame.
+    function mostrarFormulario(tipo) {
+        const loginForm = document.getElementById('form-login');
+        const registroForm = document.getElementById('form-registro');
+        if (loginForm && registroForm) {
+            loginForm.style.display = tipo === 'login' ? 'block' : 'none';
+            registroForm.style.display = tipo === 'registro' ? 'block' : 'none';
+        }
     }
-  }
 
-  function redirigirProtegido(ruta) {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      window.location.href = ruta;
-    } else {
-      window.location.href = "{{ route('login') }}";
+    // Esta función ahora usa `window.actualizarEstadoSesion` del `app.blade.php`
+    function verificarSesionJWTEnInicio() {
+        const sesionInfo = document.getElementById("sesion-info");
+        const token = localStorage.getItem("access_token");
+
+        if (!sesionInfo) return;
+
+        if (token) {
+            // Si hay un token, intentamos usar la lógica global para una verificación más robusta.
+            // Aunque para mostrar el texto es suficiente saber si existe.
+            sesionInfo.innerHTML = `<span class="badge bg-success">Sesión activa</span>`;
+            // Opcional: Llamar a la función principal de app.blade.php para una verificación completa.
+            // window.verificarYRenovarToken();
+        } else {
+            sesionInfo.innerHTML = `<span class="badge bg-danger">Sesión expirada</span>`;
+        }
     }
-  }
 
-  function verificarSesionJWT() {
-    const sesionInfo = document.getElementById("sesion-info");
-    const token = localStorage.getItem("access_token");
-
-    if (!sesionInfo) return;
-
-    if (token) {
-      sesionInfo.innerHTML = `<span class="badge bg-success">Sesión activa</span>`;
-    } else {
-      sesionInfo.innerHTML = `<span class="badge bg-danger">Sesión expirada</span>`;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", verificarSesionJWT);
+    document.addEventListener("DOMContentLoaded", verificarSesionJWTEnInicio);
 </script>
+@endpush
